@@ -1,22 +1,25 @@
 # Databricks notebook source
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC # Genie Space — Capstone Project
-# MAGIC
+# MAGIC 
 # MAGIC **Companion Notebooks:**
 # MAGIC - <a href="$./genie_space_capstone_dataset_setup">genie_space_capstone_dataset_setup</a> — Dataset setup and table provisioning
 # MAGIC - <a href="$./benchmark_sqls">benchmark_sqls</a> — Ground truth SQL queries for benchmarking
-# MAGIC
+# MAGIC 
 # MAGIC ## Objective
-# MAGIC
+# MAGIC 
 # MAGIC Build, tune, and document a production-grade Genie Space using a realistic telecom subscriber dataset. You will complete this over 5 days at the end of your residency program.
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC ## Dataset
-# MAGIC
+# MAGIC 
 # MAGIC The capstone uses five tables provisioned by the <a href="$./genie_space_capstone_dataset_setup">genie_space_capstone_dataset_setup</a> notebook provided by your instructor.
-# MAGIC
+# MAGIC 
 # MAGIC | Table | Description |
 # MAGIC |-------|-------------|
 # MAGIC | `tc_plans` | Service plan catalogue — includes plan tier, data and voice allowances, and monthly fee |
@@ -24,16 +27,16 @@
 # MAGIC | `tc_usage` | Individual usage events — voice calls, mobile data, SMS, and roaming |
 # MAGIC | `tc_tickets` | Customer support cases — includes type, priority, resolution code, and satisfaction score |
 # MAGIC | `tc_payments` | Billing and payment records — includes charge type, payment method, and payment status |
-# MAGIC
+# MAGIC 
 # MAGIC Run the setup notebook provided to you to provision these tables into `{CATALOG}.{SCHEMA}` on your workspace.
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC ## Column Reference
-# MAGIC
+# MAGIC 
 # MAGIC Several columns use coded values. The full mapping is provided below — use this as your source of truth when configuring the Knowledge Store.
-# MAGIC
+# MAGIC 
 # MAGIC | Table | Column | Coded Values | Notes |
 # MAGIC |-------|--------|-------------|-------|
 # MAGIC | tc_plans | plan_tier | 1, 2, 3, 4 | Tier names are not stored in the table |
@@ -58,7 +61,7 @@
 
 # MAGIC %md
 # MAGIC ## Decode Table
-# MAGIC
+# MAGIC 
 # MAGIC | Code | Meaning | Code | Meaning |
 # MAGIC |------|---------|------|---------|
 # MAGIC | plan_tier 1 | Basic | plan_tier 2 | Standard |
@@ -94,9 +97,9 @@
 
 # MAGIC %md
 # MAGIC ## Deliverables
-# MAGIC
+# MAGIC 
 # MAGIC Submit the following by Day 10:
-# MAGIC
+# MAGIC 
 # MAGIC 1. A configured Genie Space with all 5 tables
 # MAGIC 2. Knowledge Store — table descriptions, column glossary, 5+ example SQLs
 # MAGIC 3. Benchmark results — 15 questions at 85%+ accuracy
@@ -107,33 +110,33 @@
 
 # MAGIC %md
 # MAGIC ## Day 1-2: Build the Genie Space
-# MAGIC
+# MAGIC 
 # MAGIC ### 1. Define the business context first
-# MAGIC
+# MAGIC 
 # MAGIC - **Persona:** Customer Insights Analyst at NorthWave Telecom
 # MAGIC - **Domain:** subscriber management, usage analytics, revenue performance, and support operations
 # MAGIC - Identify the 15 questions (from the benchmark suite below) your user needs answered
-# MAGIC
+# MAGIC 
 # MAGIC ### 2. Create the Space
-# MAGIC
+# MAGIC 
 # MAGIC In Genie, click **+ New**, add all 5 tables, then configure:
-# MAGIC
+# MAGIC 
 # MAGIC - **Title:** NorthWave Telecom — Subscriber Analytics
 # MAGIC - **Description:** Enables customer insights analysts to explore subscriber status, usage trends, payment performance, and support ticket resolution for the NorthWave telecom business
 # MAGIC - **Sample questions:** Add 3–5 from the benchmark list below
-# MAGIC
+# MAGIC 
 # MAGIC ### 3. Populate the Knowledge Store
-# MAGIC
+# MAGIC 
 # MAGIC Work through each layer — in order of reliability:
-# MAGIC
+# MAGIC 
 # MAGIC #### Table & column descriptions (edit in Unity Catalog)
-# MAGIC
+# MAGIC 
 # MAGIC For each table, write a clear business description in Unity Catalog and annotate every coded column using the Column Reference table below. Without these descriptions, Genie has no way to interpret the single-letter and numeric codes stored in the dataset.
-# MAGIC
+# MAGIC 
 # MAGIC #### Instructions (add in Genie Space settings)
-# MAGIC
+# MAGIC 
 # MAGIC Using the Column Reference table, write precise Genie instructions that define:
-# MAGIC
+# MAGIC 
 # MAGIC - How "revenue" should be calculated (consider which payment types and statuses count)
 # MAGIC - What subscriber statuses qualify as "active"
 # MAGIC - What makes a ticket "open" vs resolved
@@ -142,22 +145,29 @@
 # MAGIC - How to handle zero values in allowance columns
 # MAGIC - The fiscal year definition for NorthWave Telecom
 # MAGIC - How adjustment payments (ADJ) should be treated in financial calculations
-# MAGIC
+# MAGIC 
 # MAGIC #### Example SQL (add the 5 most critical queries as certified examples)
-# MAGIC
+# MAGIC 
 # MAGIC Identify the queries most likely to return wrong results without proper context — these are your best candidates for certified examples. Focus on queries that combine multiple coded columns or involve non-obvious aggregation logic. Write and test each query against the actual tables before adding it to the Knowledge Store.
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC ## Day 3-4: Benchmark & Tune
-# MAGIC
-# MAGIC **The tuning loop:**
-# MAGIC
-# MAGIC Ask question in Genie → compare generated SQL to gold standard → identify failure → fix (UC metadata first, then Genie instructions, then example SQL) → re-test
-# MAGIC
+# MAGIC 
+# MAGIC # **Tuning Instructions:**
+# MAGIC #
+# MAGIC ### To maximize Genie Space accuracy and performance:
+# MAGIC 
+# MAGIC 1. Review and implement best practices outlined here: https://docs.databricks.com/aws/en/genie/best-practices
+# MAGIC 2. Iteratively test Genie with the benchmark questions below to identify gaps or failure modes.
+# MAGIC 3. Tune your Space by refining instructions, updating column/table descriptions, and validating entity mappings.
+# MAGIC 4. After each round of tuning, re-run the benchmark suite and log the results.
+# MAGIC 5. Focus especially on ambiguous logic (coded columns, revenue calculations, status flags, etc.)—clarify rules in instructions and catalog.
+# MAGIC 6. Document all changes and decisions made during tuning for transparency and reproducibility.
+# MAGIC 
 # MAGIC ### Benchmark Suite
-# MAGIC
+# MAGIC 
 # MAGIC | # | Question | Difficulty |
 # MAGIC |---|----------|------------|
 # MAGIC | 1 | How many active subscribers do we currently have? | Basic |
@@ -175,16 +185,16 @@
 # MAGIC | 13 | Which active subscribers have both a high churn risk score and a high total payment amount? | Advanced |
 # MAGIC | 14 | What is the average ticket resolution time (in days) by type and priority? | Advanced |
 # MAGIC | 15 | What is the total monthly revenue at risk if all high-churn-risk active subscribers churned? | Advanced |
-# MAGIC
+# MAGIC 
 # MAGIC **Target:** 13/15 passing (87%)
-# MAGIC
+# MAGIC 
 # MAGIC **NOTE:** You can find the ground truth SQL queries for benchmarking in the <a href="$./benchmark_sqls">benchmark_sqls</a> notebook.
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC ### Common Failure Modes
-# MAGIC
+# MAGIC 
 # MAGIC | Failure | Likely Cause | Fix |
 # MAGIC |---------|-------------|-----|
 # MAGIC | Revenue inflated — includes failed payments | pmt_status codes not defined | Define which pmt_status values count as collected revenue |
@@ -193,24 +203,24 @@
 # MAGIC | Data usage double-counts roaming | usage_type R not separated from D | Define each usage_type code in UC description |
 # MAGIC | Unlimited plans excluded or shown as zero | data_gb = 0 treated literally | Annotate what zero means for allowance columns |
 # MAGIC | SLA % calculated over all tickets | Open tickets included in denominator | Define what "open" means and how to identify resolved tickets |
-# MAGIC
+# MAGIC 
 # MAGIC Log all your workings and observations with respect to tuning your Genie space to improve accuracy.
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC ## Day 5: Monitoring & Delivery Report
-# MAGIC
+# MAGIC 
 # MAGIC ### Monitoring
-# MAGIC
+# MAGIC 
 # MAGIC - Open the **Monitoring** tab in your Genie Space — review thumbs up/down feedback and failed queries
 # MAGIC - Build a simple AI/BI dashboard with: queries per day, % positive feedback, top 10 questions asked, error rate
 # MAGIC - Set a Databricks Alert for when daily error rate > 10%
-# MAGIC
+# MAGIC 
 # MAGIC ### Delivery Report
-# MAGIC
+# MAGIC 
 # MAGIC Cover these four sections:
-# MAGIC
+# MAGIC 
 # MAGIC 1. **Discovery** — what questions did your persona need? Which coded columns caused the most initial failures and why?
 # MAGIC 2. **Design decisions** — what did you add to UC metadata vs. Genie instructions vs. example SQL, and why?
 # MAGIC 3. **Tuning** — how many iterations? Top 3 failure patterns, root cause analysis, and the exact fix applied each time
@@ -219,7 +229,7 @@
 
 # MAGIC %md
 # MAGIC ## Assessment Rubric
-# MAGIC
+# MAGIC 
 # MAGIC | Area | Weight | Standard |
 # MAGIC |------|--------|----------|
 # MAGIC | Genie Space setup | 10% | All 5 tables, title, description, sample questions |
@@ -227,14 +237,14 @@
 # MAGIC | Benchmark score | 15% | ≥ 85% (13+ of 15 passing) |
 # MAGIC | Tuning documentation | 45% | Failure modes documented with root cause and fix |
 # MAGIC | Monitoring + report | 10% | Dashboard and 4-section delivery report |
-# MAGIC
+# MAGIC 
 # MAGIC **Passing threshold:** 80% weighted score
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC ## Reference
-# MAGIC
+# MAGIC 
 # MAGIC | Resource | Link |
 # MAGIC |----------|------|
 # MAGIC | AI/BI for Data Analysts course (includes lab setup) | [Partner Academy](https://partner-academy.databricks.com/learn/courses/3707/aibi-for-data-analysts) |
