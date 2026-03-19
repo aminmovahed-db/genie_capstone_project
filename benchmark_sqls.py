@@ -369,9 +369,8 @@ FROM {catalog}.{schema}.tc_tickets
 WHERE resolved_date IS NULL
 """,
 
-    "Q4 — List all current service plans and their monthly fees": f"""
-SELECT plan_id,
-       plan_name,
+    "Q4 — List all current service plans and tiers and their monthly fees": f"""
+SELECT plan_name,
        CASE plan_tier
            WHEN 1 THEN 'Basic'
            WHEN 2 THEN 'Standard'
@@ -383,8 +382,8 @@ FROM {catalog}.{schema}.tc_plans
 WHERE is_active = TRUE
 """,
 
-    "Q5 — What is the average monthly fee per subscriber for each plan tier?": f"""
-SELECT p.plan_tier,
+    "Q5 — What is the average monthly fee per active subscriber for each plan tier?": f"""
+SELECT 
        CASE p.plan_tier
            WHEN 1 THEN 'Basic'
            WHEN 2 THEN 'Standard'
@@ -411,28 +410,27 @@ LIMIT 1
 """,
 
     "Q7 — What is the payment failure rate by payment method?": f"""
-SELECT pmt_method,
+SELECT CASE pmt_method WHEN 'CC' THEN 'Credit Card' WHEN 'DD' THEN 'Direct Debit' WHEN 'EW' THEN 'E-Wallet' WHEN 'BT' THEN 'Bank Transfer' END as payment_method,
        ROUND(100.0 * SUM(CASE WHEN pmt_status = 'F' THEN 1 ELSE 0 END) / COUNT(*), 2) AS failure_rate_pct
 FROM {catalog}.{schema}.tc_payments
-GROUP BY pmt_method
+GROUP BY payment_method
 """,
 
     "Q8 — How does total mobile data consumption compare across plan tiers?": f"""
-SELECT p.plan_tier,
+SELECT 
        CASE p.plan_tier
            WHEN 1 THEN 'Basic'
            WHEN 2 THEN 'Standard'
            WHEN 3 THEN 'Premium'
            WHEN 4 THEN 'Enterprise'
        END                              AS tier_name,
-       ROUND(SUM(u.quantity), 0)        AS total_mb,
        ROUND(SUM(u.quantity) / 1024, 2) AS total_gb
 FROM {catalog}.{schema}.tc_usage u
 JOIN {catalog}.{schema}.tc_customers c ON u.customer_id = c.customer_id
 JOIN {catalog}.{schema}.tc_plans p ON c.plan_id     = p.plan_id
 WHERE u.usage_type = 'D'
-GROUP BY p.plan_tier
-ORDER BY p.plan_tier
+GROUP BY tier_name
+ORDER BY tier_name
 """,
 
     "Q9 — What percentage of support tickets were resolved within their SLA target?": f"""
@@ -469,12 +467,6 @@ ORDER BY churn_month
 
     "Q12 — What is the net monthly revenue trend after credits and adjustments?": f"""
 SELECT billing_month,
-       ROUND(SUM(CASE
-               WHEN payment_type IN ('MRC','OTC') AND pmt_status = 'S' THEN  amount
-               WHEN payment_type IN ('MRC','OTC') AND pmt_status = 'R' THEN -amount
-               ELSE 0 END), 2)                                         AS gross_revenue,
-       ROUND(SUM(CASE WHEN payment_type = 'ADJ'
-                      THEN amount ELSE 0 END), 2)                      AS adjustments,
        ROUND(SUM(CASE
                WHEN payment_type IN ('MRC','OTC') AND pmt_status = 'S' THEN  amount
                WHEN payment_type IN ('MRC','OTC') AND pmt_status = 'R' THEN -amount
@@ -518,7 +510,7 @@ ORDER BY c.churn_risk_score DESC, sp.total_paid DESC
     "Q14 — What is the average ticket resolution time (in days) by type and priority?": f"""
 SELECT ticket_type,
        priority,
-       ROUND(AVG(DATEDIFF(resolved_date, created_date)), 2) AS avg_days_to_resolve
+       ROUND(AVG(DATEDIFF(resolved_date, cre    ated_date)), 2) AS avg_days_to_resolve
 FROM {catalog}.{schema}.tc_tickets
 WHERE resolved_date IS NOT NULL
 GROUP BY ticket_type, priority
