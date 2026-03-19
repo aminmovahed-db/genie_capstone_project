@@ -14,10 +14,10 @@ Build a Genie Space that enables a **Customer Insights Analyst** at the fictiona
 | `genie_capstone_instructions.py`        | Main instructions notebook — project brief, schedule, deliverables, assessment rubric           |
 | `genie_space_capstone_dataset_setup.py` | Data generation notebook — creates all 5 tables with synthetic data                             |
 | `benchmark_sqls.py`                     | 15 gold-standard SQL queries for benchmarking, with copy-paste-ready output for the Genie Space |
-| `genie_capstone_sample_student_report.py` | **Sample student report** — benchmark score progression per tuning step, Genie link placeholders, Discovery / Design / Tuning / Monitoring sections |
+| `sample_report.py` | **Sample student report** — benchmark score progression per tuning step, Genie link placeholders, Discovery / Design / Tuning / Monitoring sections |
 
 
-All notebooks are Databricks `.py` source format. Import them into a Databricks workspace to run. Use `genie_capstone_sample_student_report` as a **template** for the delivery report and tuning log (replace sample scores and URLs with your own).
+All notebooks are Databricks `.py` source format. Import them into a Databricks workspace to run. Use `sample_report` as a **template** for the delivery report and tuning log (replace sample scores and URLs with your own).
 
 ## Dataset
 
