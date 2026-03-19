@@ -94,7 +94,7 @@ These business rules are central to achieving benchmark accuracy:
 1. Configured Genie Space with all 5 tables
 2. Knowledge Store — table descriptions, column glossary, 5+ example SQLs
 3. Benchmark results — 15 questions at 85%+ accuracy
-4. Monitoring dashboard (Genie audit logs)
+4. Monitoring review — explore the Genie Space monitoring tab and summarise observations
 5. 1-page delivery report
 
 ## Assessment Rubric
@@ -106,7 +106,7 @@ These business rules are central to achieving benchmark accuracy:
 | Knowledge Store      | 20%    | Table descriptions, glossary, 5+ example SQLs      |
 | Benchmark score      | 15%    | ≥ 85% (13+ of 15 passing)                          |
 | Tuning documentation | 45%    | Failure modes documented with root cause and fix   |
-| Monitoring + report  | 10%    | Dashboard and 4-section delivery report            |
+| Monitoring + report  | 10%    | Monitoring observations and 3-section delivery report |
 
 
 **Passing threshold:** 80% weighted score
