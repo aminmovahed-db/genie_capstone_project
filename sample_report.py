@@ -129,14 +129,6 @@
 
 # MAGIC %md
 # MAGIC ---
-# MAGIC ## 4. Monitoring review (Day 5)
-# MAGIC 
-# MAGIC **Sample observations** (replace with what you see in the Genie **Monitoring** tab):
-# MAGIC 
-# MAGIC - **Feedback:** Mix of thumbs-up on simple counts and thumbs-down on early revenue questions before instructions were tightened.
-# MAGIC - **Low-confidence / failed runs:** Clustered around multi-table questions (payments + customers) and anything mentioning “net” or “adjustment.”
-# MAGIC - **Health of the Space:** After Knowledge Store updates, failure rate dropped and monitoring showed fewer repeated retries on the same phrasing — suggests instructions and examples are aligned with user language.
-# MAGIC - **Next steps (sample):** Add one more example for the single remaining ambiguous pattern; encourage analysts to use “fiscal year” and “collected revenue” consistently in questions.
 # MAGIC 
 # MAGIC Link example for a monitored conversation: `https://<your-workspace-host>/genie/spaces/01JG8SAMPLE0/conversations/01JG8RUNMON`
 # MAGIC 
