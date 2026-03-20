@@ -138,14 +138,15 @@ SELECT c.region,
        CASE u.direction
            WHEN 'I' THEN 'Inbound'
            WHEN 'O' THEN 'Outbound'
-       END      AS direction_label,
-       ROUND(SUM(u.quantity), 2) AS total_voice_minutes
+       END      AS call_direction,
+       ROUND(SUM(u.quantity), 0) AS total_minutes
 FROM {catalog}.{schema}.tc_usage u
 JOIN {catalog}.{schema}.tc_customers c ON u.customer_id = c.customer_id
 WHERE u.usage_type = 'V'
-  AND u.direction IN ('I', 'O')
-GROUP BY c.region, u.direction
-ORDER BY c.region, u.direction
+  AND c.region IS NOT NULL
+  AND u.direction IS NOT NULL
+GROUP BY c.region, call_direction
+ORDER BY c.region, call_direction
 """,
 
     "A10 — For plans with unlimited mobile data (data allowance flag is zero meaning unlimited), how many active subscribers are on each plan?": f"""

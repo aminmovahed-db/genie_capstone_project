@@ -187,7 +187,6 @@ CROSS JOIN avg_paid ap
 WHERE c.status = 'A'
   AND c.churn_risk_score > 70
   AND sp.total_paid      > ap.avg_total_paid
-ORDER BY c.churn_risk_score DESC, sp.total_paid DESC
 """,
 
     "Q14 — What is the average ticket resolution time (in days) by type and priority?": f"""
