@@ -129,7 +129,7 @@ SELECT CASE c.`region`
        COUNT(*) AS suspended_subscribers
 FROM {catalog}.{schema}.tc_customers
 WHERE status = 'S'
-GROUP BY region
+GROUP BY region_name
 ORDER BY suspended_subscribers DESC, region
 LIMIT 3
 """,

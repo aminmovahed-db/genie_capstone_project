@@ -179,14 +179,6 @@ avg_paid AS (
 )
 SELECT c.customer_id,
        c.full_name,
-      CASE c.`region`
-      WHEN 'NW' THEN 'Northwest'
-      WHEN 'SW' THEN 'Southwest'
-      WHEN 'NE' THEN 'Northeast'
-      WHEN 'SE' THEN 'Southeast'
-      WHEN 'MW' THEN 'Midwest'
-      ELSE 'Other'
-    END AS region_name,
        c.churn_risk_score,
        sp.total_paid
 FROM {catalog}.{schema}.tc_customers c
