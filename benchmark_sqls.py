@@ -94,7 +94,7 @@ LIMIT 1
 """,
 
     "Q7 — What is the payment failure rate by payment method?": f"""
-SELECT CASE pmt_method WHEN 'CC' THEN 'Credit Card' WHEN 'DD' THEN 'Direct Debit' WHEN 'EW' THEN 'E-Wallet' WHEN 'BT' THEN 'Bank Transfer' END as payment_method,
+SELECT CASE pmt_method WHEN 'CC' THEN 'Credit Card' WHEN 'DD' THEN 'Direct Debit' WHEN 'BT' THEN 'Bank Transfer' WHEN 'WT' THEN 'Wallet' END as payment_method,
        ROUND(100.0 * SUM(CASE WHEN pmt_status = 'F' THEN 1 ELSE 0 END) / COUNT(*), 2) AS failure_rate_pct
 FROM {catalog}.{schema}.tc_payments
 GROUP BY payment_method
