@@ -1,5 +1,6 @@
 # Databricks notebook source
 
+
 # COMMAND ----------
 
 # MAGIC %md
@@ -37,7 +38,7 @@ schema = dbutils.widgets.get("schema")
 ASSESSMENT_QUERIES = {
     "A1 — For active subscribers only, which acquisition channel has the highest median churn risk score?": f"""
 WITH channel_median AS (
-    SELECT acq_channel,
+    SELECT CASE tc_customers.acq_channel WHEN 'ONL' THEN 'Online' WHEN 'RET' THEN 'Retail' WHEN 'REF' THEN 'Referral' WHEN 'TEL' THEN 'Telesales' END,
            percentile_approx(churn_risk_score, 0.5) AS median_risk
     FROM {catalog}.{schema}.tc_customers
     WHERE status = 'A'
@@ -85,7 +86,14 @@ WHERE c.status = 'A'
 """,
 
     "A5 — For open support tickets with critical priority only, how many are there per customer region?": f"""
-SELECT c.region,
+SELECT  CASE c.`region`
+      WHEN 'NW' THEN 'Northwest'
+      WHEN 'SW' THEN 'Southwest'
+      WHEN 'NE' THEN 'Northeast'
+      WHEN 'SE' THEN 'Southeast'
+      WHEN 'MW' THEN 'Midwest'
+      ELSE 'Other'
+      END AS region_name,
        COUNT(*) AS open_critical_tickets
 FROM {catalog}.{schema}.tc_tickets t
 JOIN {catalog}.{schema}.tc_customers c ON t.customer_id = c.customer_id
@@ -110,11 +118,18 @@ WHERE t.resolved_date IS NOT NULL
 """,
 
     "A7 — What are the top three regions by count of suspended subscribers?": f"""
-SELECT region,
+SELECT CASE c.`region`
+      WHEN 'NW' THEN 'Northwest'
+      WHEN 'SW' THEN 'Southwest'
+      WHEN 'NE' THEN 'Northeast'
+      WHEN 'SE' THEN 'Southeast'
+      WHEN 'MW' THEN 'Midwest'
+      ELSE 'Other'
+      END AS region_name,
        COUNT(*) AS suspended_subscribers
 FROM {catalog}.{schema}.tc_customers
 WHERE status = 'S'
-GROUP BY region
+GROUP BY region_name
 ORDER BY suspended_subscribers DESC, region
 LIMIT 3
 """,
@@ -134,7 +149,14 @@ FROM (
 """,
 
     "A9 — For voice usage only, what are total minutes by region and by call direction (inbound vs outbound)?": f"""
-SELECT c.region,
+SELECT CASE c.`region`
+      WHEN 'NW' THEN 'Northwest'
+      WHEN 'SW' THEN 'Southwest'
+      WHEN 'NE' THEN 'Northeast'
+      WHEN 'SE' THEN 'Southeast'
+      WHEN 'MW' THEN 'Midwest'
+      ELSE 'Other'
+      END AS region_name,
        CASE u.direction
            WHEN 'I' THEN 'Inbound'
            WHEN 'O' THEN 'Outbound'
@@ -150,15 +172,15 @@ ORDER BY c.region, call_direction
 """,
 
     "A10 — For plans with unlimited mobile data (data allowance flag is zero meaning unlimited), how many active subscribers are on each plan?": f"""
-SELECT p.plan_id,
+SELECT 
        p.plan_name,
        COUNT(c.customer_id) AS active_subscribers
 FROM {catalog}.{schema}.tc_plans p
 LEFT JOIN {catalog}.{schema}.tc_customers c
        ON p.plan_id = c.plan_id AND c.status = 'A'
 WHERE p.data_gb = 0
-GROUP BY p.plan_id, p.plan_name
-ORDER BY p.plan_id
+GROUP BY  p.plan_name
+ORDER BY p.plan_name
 """,
 
     "A11 — What percentage of all payment rows are successful (pmt_status S), counting every payment type?": f"""

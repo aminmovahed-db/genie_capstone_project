@@ -1,12 +1,13 @@
 # Databricks notebook source
 
+
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC # NorthWave Telecom — Benchmark SQL Answers
-# MAGIC 
+# MAGIC
 # MAGIC Set the **Catalog** and **Schema** widgets at the top of the notebook, then copy and paste the SQL (with your catalog/schema substituted) for the Genie Space
-# MAGIC 
+# MAGIC
 # MAGIC ---
 
 # COMMAND ----------
@@ -22,7 +23,7 @@ schema  = dbutils.widgets.get("schema")
 # MAGIC %md
 # MAGIC ---
 # MAGIC ## Genie Space — Copy-Paste Ready SQL
-# MAGIC 
+# MAGIC
 # MAGIC The cell below prints all 15 in a clean format you can copy directly into your Genie Space as example SQL.
 
 # COMMAND ----------
@@ -82,12 +83,12 @@ ORDER BY p.plan_tier
 """,
 
     "Q6 — Which region has the highest number of subscribers at risk of churning?": f"""
-SELECT region,
+SELECT CASE tc_customers.region WHEN 'NW' THEN 'Northwest' WHEN 'SW' THEN 'Southwest' WHEN 'NE' THEN 'Northeast' WHEN 'SE' THEN 'Southeast' WHEN 'MW' THEN 'Midwest' END,
        COUNT(*) AS high_risk_count
 FROM {catalog}.{schema}.tc_customers
 WHERE churn_risk_score > 70
   AND status = 'A'
-GROUP BY region
+GROUP BY CASE tc_customers.region WHEN 'NW' THEN 'Northwest' WHEN 'SW' THEN 'Southwest' WHEN 'NE' THEN 'Northeast' WHEN 'SE' THEN 'Southeast' WHEN 'MW' THEN 'Midwest' END
 ORDER BY high_risk_count DESC
 LIMIT 1
 """,
@@ -178,7 +179,6 @@ avg_paid AS (
 )
 SELECT c.customer_id,
        c.full_name,
-       c.region,
        c.churn_risk_score,
        sp.total_paid
 FROM {catalog}.{schema}.tc_customers c
@@ -190,13 +190,31 @@ WHERE c.status = 'A'
 """,
 
     "Q14 — What is the average ticket resolution time (in days) by type and priority?": f"""
-SELECT ticket_type,
-       priority,
-       ROUND(AVG(DATEDIFF(resolved_date, created_date)), 2) AS avg_days_to_resolve
-FROM {catalog}.{schema}.tc_tickets
-WHERE resolved_date IS NOT NULL
-GROUP BY ticket_type, priority
-ORDER BY ticket_type, priority
+SELECT
+  CASE tc_tickets.ticket_type
+    WHEN 'TEC' THEN 'Technical'
+    WHEN 'BIL' THEN 'Billing'
+    WHEN 'SVC' THEN 'Service Change'
+    WHEN 'GEN' THEN 'General Inquiry'
+  END AS ticket_type_name,
+  CASE tc_tickets.priority
+    WHEN 1 THEN 'Critical'
+    WHEN 2 THEN 'High'
+    WHEN 3 THEN 'Medium'
+    WHEN 4 THEN 'Low'
+  END AS priority_name,
+  ROUND(AVG(DATEDIFF(tc_tickets.resolved_date, tc_tickets.created_date)), 2) AS avg_resolution_days
+FROM
+  {catalog}.{schema}.`tc_tickets`
+WHERE
+  tc_tickets.resolved_date IS NOT NULL
+  AND tc_tickets.created_date IS NOT NULL
+GROUP BY
+  ticket_type_name,
+  priority_name
+ORDER BY
+  ticket_type_name,
+  priority_name;
 """,
 
     "Q15 — What is the total monthly revenue at risk if all high-churn-risk active subscribers churned?": f"""
