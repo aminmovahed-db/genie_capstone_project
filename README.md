@@ -13,6 +13,7 @@ Build a Genie Space that enables a **Customer Insights Analyst** at the fictiona
 | `genie_capstone_instructions.py`        | Main instructions notebook — project brief, column reference & decode tables, schedule, deliverables, assessment rubric |
 | `genie_space_capstone_dataset_setup.py` | Data generation notebook — creates all 5 tables with synthetic data                             |
 | `benchmark_sqls.py`                     | 15 gold-standard SQL queries for benchmarking, with copy-paste-ready output for the Genie Space |
+| `assessment_sqls.py`                    | 15 harder assessment questions + expected SQL — use after tuning to stress-test Genie accuracy |
 | `sample_report.py`                      | Sample delivery report — benchmark score progression per tuning step, Genie link placeholders, Discovery / Design / Tuning / Monitoring sections |
 
 All notebooks are Databricks `.py` source format. Import them into a Databricks workspace to run. Use `sample_report` as a **template** for the delivery report and tuning log (replace sample scores and URLs with your own).
@@ -35,11 +36,12 @@ The dataset includes intentional ambiguities (coded columns, implicit business r
 
 ## Getting Started
 
-1. **Import** the four `.py` notebooks into your Databricks workspace
+1. **Import** the `.py` notebooks into your Databricks workspace
 2. **Open** `genie_space_capstone_dataset_setup` — set the `catalog` and `schema` widgets, then **Run All** to provision the tables
 3. **Open** `genie_capstone_instructions` for the full brief, column reference, decode table, and day-by-day guidance
 4. **Open** `benchmark_sqls` — set the same `catalog` and `schema` widgets, then **Run All** to execute all 15 benchmark queries and generate copy-paste-ready SQL for your Genie Space
-5. **Open** `sample_report` when you are ready to structure your tuning log and delivery report
+5. **Open** `assessment_sqls` (optional) — same widgets; 15 harder questions with ground-truth SQL to validate a tuned Space
+6. **Open** `sample_report` when you are ready to structure your tuning log and delivery report
 
 ## 5-Day Schedule
 

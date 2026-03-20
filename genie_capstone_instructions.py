@@ -8,6 +8,7 @@
 # MAGIC **Companion Notebooks:**
 # MAGIC - <a href="$./genie_space_capstone_dataset_setup">genie_space_capstone_dataset_setup</a> — Dataset setup and table provisioning
 # MAGIC - <a href="$./benchmark_sqls">benchmark_sqls</a> — Ground truth SQL queries for benchmarking
+# MAGIC - <a href="$./assessment_sqls">assessment_sqls</a> — Harder assessment questions + expected SQL (post-tuning accuracy check)
 # MAGIC - <a href="$./sample_report">sample_report</a> — Sample delivery report (scores per tuning step, Genie links, Discovery / Design / Tuning / Monitoring)
 # MAGIC 
 # MAGIC ## Objective
