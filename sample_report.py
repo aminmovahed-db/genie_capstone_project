@@ -129,6 +129,38 @@
 
 # MAGIC %md
 # MAGIC ---
+# MAGIC ## 4. Assessment Validation (one-time, post-tuning)
+# MAGIC 
+# MAGIC After completing all tuning iterations, we ran the 15 harder questions from [assessment_sqls]($./assessment_sqls) **once** against the tuned Genie Space. No further tuning was applied — this is a snapshot of final accuracy on unseen, harder questions.
+# MAGIC 
+# MAGIC ### Assessment results (sample)
+# MAGIC 
+# MAGIC | A# | Question (short) | Result | Root cause of failure (if any) | Suggested fix (not applied) |
+# MAGIC |----|------------------|--------|-------------------------------|----------------------------|
+# MAGIC | A1 | Channel with highest median churn risk | Pass | — | — |
+# MAGIC | A2 | Annual/biennial subscribers by tier | Pass | — | — |
+# MAGIC | A3 | Total roaming GB | Pass | — | — |
+# MAGIC | A4 | Subscribers spending 20%+ above plan fee | **Fail** | Genie compared `monthly_spend` to `monthly_fee` directly instead of multiplying by 1.2 | Add an instruction: "spending above plan fee" means `monthly_spend > monthly_fee * 1.2` when a percentage is stated |
+# MAGIC | A5 | Open critical tickets by region | Pass | — | — |
+# MAGIC | A6 | Avg satisfaction when SLA missed | **Fail** | Genie used a fixed SLA of 3 days for all priorities instead of the per-priority map | Add a certified example SQL showing the `CASE priority WHEN 1 THEN 1 …` SLA logic inside a `DATEDIFF` comparison |
+# MAGIC | A7 | Top 3 regions by suspended subscribers | Pass | — | — |
+# MAGIC | A8 | Active subscribers with 3+ billing tickets in 12 mo | Pass | — | — |
+# MAGIC | A9 | Voice minutes by region and direction | Pass | — | — |
+# MAGIC | A10 | Unlimited data plans — active subscriber count | **Fail** | Genie filtered `data_gb IS NULL` instead of `data_gb = 0` | Reinforce in UC column comment and instructions that `data_gb = 0` means **unlimited**, not zero or NULL |
+# MAGIC | A11 | Overall payment success rate % | Pass | — | — |
+# MAGIC | A12 | Churned customers — plans ranked by avg lifetime | Pass | — | — |
+# MAGIC | A13 | High-risk long-tenure active subscribers by tier | Pass | — | — |
+# MAGIC | A14 | Regional top spenders (rank 1 per region) | Pass | — | — |
+# MAGIC | A15 | FY adjustment amount (ADJ, successful only) | Pass | — | — |
+# MAGIC 
+# MAGIC **Sample score:** 12 / 15 (80%)
+# MAGIC 
+# MAGIC *Replace the table above with your actual single-run results. For each failure, describe what Genie got wrong and what Knowledge Store change you believe would fix it — but do not apply the fix.*
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ---
 # MAGIC 
 # MAGIC Link example for a monitored conversation: `https://<your-workspace-host>/genie/spaces/01JG8SAMPLE0/conversations/01JG8RUNMON`
 # MAGIC 

@@ -105,8 +105,9 @@
 # MAGIC 1. A configured Genie Space with all 5 tables
 # MAGIC 2. Knowledge Store — table descriptions, column glossary, 5+ example SQLs
 # MAGIC 3. Benchmark results — 15 questions at 85%+ accuracy
-# MAGIC 4. Monitoring review — explore the Genie Space monitoring tab and summarise your observations
-# MAGIC 5. A 1-page delivery report
+# MAGIC 4. Assessment results — 15 harder questions with pass/fail, root cause, and suggested fix for each failure
+# MAGIC 5. Monitoring review — explore the Genie Space monitoring tab and summarise your observations
+# MAGIC 6. A 1-page delivery report
 
 # COMMAND ----------
 
@@ -192,6 +193,19 @@
 # MAGIC 
 # MAGIC **NOTE:** You can find the ground truth SQL queries for benchmarking in the <a href="$./benchmark_sqls">benchmark_sqls</a> notebook.
 # MAGIC Log all your workings and observations with respect to tuning your Genie space to improve accuracy.
+# MAGIC
+# MAGIC ### Final Step — Assessment Validation
+# MAGIC
+# MAGIC Once you have completed all tuning iterations and are satisfied with your benchmark scores, run the <a href="$./assessment_sqls">assessment_sqls</a> notebook as a **one-time** final accuracy check. These questions are **harder** than the benchmark suite — they combine multiple tables, coded fields, implicit business rules, window functions, and subquery logic.
+# MAGIC
+# MAGIC > **Important:** Run the assessment only **once** — do **not** iterate or re-tune based on the results. The purpose is to capture a snapshot of how well your tuned Space handles unseen, harder questions.
+# MAGIC
+# MAGIC 1. Ask each of the 15 assessment questions in your Genie Space and compare the results against the ground-truth SQL output.
+# MAGIC 2. Record a **Pass / Fail** for every question, along with the Genie-generated SQL and the expected SQL.
+# MAGIC 3. For any **failed** question, document:
+# MAGIC    - **Root cause** — what did Genie get wrong? (e.g. wrong join, missing filter, incorrect code mapping, misunderstood business rule)
+# MAGIC    - **Suggested fix** — what change to the Knowledge Store (table/column description, instruction, or example SQL) **would** address the failure? (Do not apply the fix — just describe what you would do.)
+# MAGIC 4. Include the assessment results table in the **Tuning** section of your delivery report.
 
 # COMMAND ----------
 
@@ -213,7 +227,7 @@
 # MAGIC 
 # MAGIC 1. **Discovery** — what questions did your persona need? Which coded columns caused the most initial failures and why?
 # MAGIC 2. **Design decisions** — what did you add to UC metadata vs. Genie instructions vs. example SQL, and why?
-# MAGIC 3. **Tuning** — how many iterations? Top 3 failure patterns, root cause analysis, and the exact fix applied each time
+# MAGIC 3. **Tuning** — how many iterations? Top 3 failure patterns, root cause analysis, and the exact fix applied each time. Include your assessment results table (pass/fail per question, root cause and suggested fix for failures)
 
 # COMMAND ----------
 
