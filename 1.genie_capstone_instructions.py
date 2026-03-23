@@ -116,18 +116,21 @@
 
 # COMMAND ----------
 
-# MAGIC %md ##Deliverables
+# MAGIC %md ## Deliverables
 # MAGIC - Confirm the catalog and schema name you have used
 # MAGIC - Export and share Delivery Report created in Step 7
-# MAGIC - Export and share Genie Space as json using Export API below:
-# MAGIC `export DATABRICKS_HOST="https://<your-workspace-url>"
-# MAGIC export DATABRICKS_TOKEN="<your_pat>"
-# MAGIC SPACE_ID="<your_genie_space_id>". -- Open the Genie space in the UI, go to Settings, and copy the space ID from there. 
+# MAGIC - Open the Genie space in the UI, go to Settings, and copy the space ID from there.
+# MAGIC - Export and share Genie Space as JSON using Export API below:
+# MAGIC
 # MAGIC ```
+# MAGIC export DATABRICKS_HOST="https://<your-workspace-url>"
+# MAGIC export DATABRICKS_TOKEN="<your_pat>"
+# MAGIC export SPACE_ID="<your_genie_space_id>"
 # MAGIC curl -X GET \
 # MAGIC   "$DATABRICKS_HOST/api/2.0/genie/spaces/$SPACE_ID?include_serialized_space=true" \
 # MAGIC   -H "Authorization: Bearer $DATABRICKS_TOKEN" \
-# MAGIC   -H "Content-Type: application/json" ```
+# MAGIC   -H "Content-Type: application/json" 
+# MAGIC ```
 
 # COMMAND ----------
 

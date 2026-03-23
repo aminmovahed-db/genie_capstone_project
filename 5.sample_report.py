@@ -102,8 +102,8 @@
 # MAGIC ## Lesson Learnt
 # MAGIC
 # MAGIC - Do you follow the best practice doc? What works and what doesn't work?
-# MAGIC - What do you know when it doesn't work?
-# MAGIC - What are differnt types of error you encountered and what is the best way to address them?
+# MAGIC - What do you do when it doesn't work?
+# MAGIC - What are the different types of errors you encountered, and what is the best way to address them?
 # MAGIC
 # MAGIC An example below:
 # MAGIC
