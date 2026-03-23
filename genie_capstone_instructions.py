@@ -1,27 +1,29 @@
 # Databricks notebook source
+# MAGIC %md
+# MAGIC # Genie Space — Capstone Project Instructions
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC # Genie Space — Capstone Project
-# MAGIC 
-# MAGIC **Companion Notebooks:**
-# MAGIC - <a href="$./genie_space_capstone_dataset_setup">genie_space_capstone_dataset_setup</a> — Dataset setup and table provisioning
-# MAGIC - <a href="$./benchmark_sqls">benchmark_sqls</a> — Ground truth SQL queries for benchmarking
-# MAGIC - <a href="$./assessment_sqls">assessment_sqls</a> — Harder assessment questions + expected SQL (post-tuning accuracy check)
-# MAGIC - <a href="$./sample_report">sample_report</a> — Sample delivery report (scores per tuning step, Genie links, Discovery / Design / Tuning / Monitoring)
-# MAGIC 
 # MAGIC ## Objective
-# MAGIC 
-# MAGIC Build, tune, and document a production-grade Genie Space using a realistic telecom subscriber dataset. Expected effort: **8–10 hours**.
+# MAGIC
+# MAGIC Build, tune, and document a production-grade Genie Space using a realistic telecom subscriber dataset. You can complete this over 5 days ( < 10 hrs in total).
+# MAGIC
+# MAGIC By the end of the capstone project, the learner should be able to effectively set up and tune Genie space to achieve production-grade accuracy following best practices. 
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC ## Dataset
-# MAGIC 
-# MAGIC The capstone uses five tables provisioned by the <a href="$./genie_space_capstone_dataset_setup">genie_space_capstone_dataset_setup</a> notebook provided by your instructor.
-# MAGIC 
+# MAGIC %md ##Business Context & Dataset
+# MAGIC
+# MAGIC - **Persona:** Customer Insights Analyst at NorthWave Telecom
+# MAGIC - **Domain:** subscriber management, usage analytics, revenue performance, and support operations
+# MAGIC - **Critical User Journey:** Enables customer insights analysts to explore subscriber status, usage trends, payment performance, and support ticket resolution for the NorthWave telecom business
+# MAGIC
+
+# COMMAND ----------
+
+# MAGIC %md ### Tables
+# MAGIC
 # MAGIC | Table | Description |
 # MAGIC |-------|-------------|
 # MAGIC | `tc_plans` | Service plan catalogue — includes plan tier, data and voice allowances, and monthly fee |
@@ -29,16 +31,14 @@
 # MAGIC | `tc_usage` | Individual usage events — voice calls, mobile data, SMS, and roaming |
 # MAGIC | `tc_tickets` | Customer support cases — includes type, priority, resolution code, and satisfaction score |
 # MAGIC | `tc_payments` | Billing and payment records — includes charge type, payment method, and payment status |
-# MAGIC 
-# MAGIC Run the setup notebook provided to you to provision these tables into `{CATALOG}.{SCHEMA}` on your workspace.
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## Column Reference
-# MAGIC 
-# MAGIC Several columns use coded values. The full mapping is provided below — use this as your source of truth when configuring the Knowledge Store.
-# MAGIC 
+# MAGIC ### Coded Column
+# MAGIC
+# MAGIC The tables contain columns storing only coded values. The full mapping is provided in next cell.
+# MAGIC
 # MAGIC | Table | Column | Coded Values | Notes |
 # MAGIC |-------|--------|-------------|-------|
 # MAGIC | tc_plans | plan_tier | 1, 2, 3, 4 | Tier names are not stored in the table |
@@ -62,8 +62,8 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## Decode Table
-# MAGIC 
+# MAGIC ### Decoded Values
+# MAGIC
 # MAGIC | Code | Meaning | Code | Meaning |
 # MAGIC |------|---------|------|---------|
 # MAGIC | plan_tier 1 | Basic | plan_tier 2 | Standard |
@@ -98,161 +98,47 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC ## Deliverables
-# MAGIC 
-# MAGIC Submit the following upon completion:
-# MAGIC 
-# MAGIC 1. A configured Genie Space with all 5 tables
-# MAGIC 2. Knowledge Store — table descriptions, column glossary, 5+ example SQLs
-# MAGIC 3. Benchmark results — 15 questions at 85%+ accuracy
-# MAGIC 4. Assessment results — 15 harder questions with pass/fail, root cause, and suggested fix for each failure
-# MAGIC 5. Monitoring review — explore the Genie Space monitoring tab and summarise your observations
-# MAGIC 6. A 1-page delivery report
+# MAGIC %md ##Implementation Steps
+# MAGIC
+# MAGIC Step 1: Run <a href="$./genie_space_capstone_dataset_setup">genie_space_capstone_dataset_setup</a> to create tables and data in your own workspace, catalog and schema
+# MAGIC
+# MAGIC Step 2: Create empty Genie Space, add <a href="$./benchmark_sqls">benchmark_sqls</a> to the space — the notebook contains benchmark questions with ground truth SQLs for training/tuning Genie space - MUST score >85%
+# MAGIC
+# MAGIC Step 3: Run benchmark Evaluation to generate baseline accuracy
+# MAGIC
+# MAGIC Step 4: Iteratively tune Genie space following <a href="https://docs.google.com/document/d/1HTUbxnO9y5NQQI3ZyBY9nR6V0TKuRZ0nRhHBD2alPkI/edit?tab=t.0">Best Practices For Building A Genie Space</a> and <a href="https://docs.databricks.com/aws/en/genie/best-practices">Curate an effective Genie space</a>
+# MAGIC
+# MAGIC Step 5: Frequently run Benchmark Evaluations on all benchmark questions to show progress - Go back to Step 4 until target >85% is achieved
+# MAGIC
+# MAGIC Step 6: Once you have achieved accuracy score, add <a href="$./assessment_sqls">assessment_sqls</a> to the space and run Benmark evaluations on these queries. - These queries are only for cross validating tuned Genie space - DO NOT tune with these queries. **NOTE**: You are not marked based on accuracy of assessment queries, but please record your the result in the delivery report
+# MAGIC
+# MAGIC Step 7: Capture your tuning logs, key findings, lessons learnt in delivery report following this template  <a href="$./sample_report">sample_report</a> and sumbit for assessment
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC ## Phase 1 (~3-4 hrs): Build the Genie Space
-# MAGIC 
-# MAGIC ### 1. Define the business context first
-# MAGIC 
-# MAGIC - **Persona:** Customer Insights Analyst at NorthWave Telecom
-# MAGIC - **Domain:** subscriber management, usage analytics, revenue performance, and support operations
-# MAGIC - Identify the 15 questions (from the benchmark suite below) your user needs answered
-# MAGIC 
-# MAGIC ### 2. Create the Space
-# MAGIC 
-# MAGIC In Genie, click **+ New**, add all 5 tables, then configure:
-# MAGIC 
-# MAGIC - **Title:** NorthWave Telecom — Subscriber Analytics
-# MAGIC - **Description:** Enables customer insights analysts to explore subscriber status, usage trends, payment performance, and support ticket resolution for the NorthWave telecom business
-# MAGIC 
-# MAGIC ### 3. Populate the Knowledge Store
-# MAGIC 
-# MAGIC Work through each layer — in order of reliability:
-# MAGIC 
-# MAGIC #### Table & column descriptions (edit in Unity Catalog)
-# MAGIC 
-# MAGIC For each table, write a clear business description in Unity Catalog and annotate every coded column using the Column Reference table below. Without these descriptions, Genie has no way to interpret the single-letter and numeric codes stored in the dataset.
-# MAGIC 
-# MAGIC #### Instructions (add in Genie Space settings)
-# MAGIC 
-# MAGIC Using the Column Reference table, write precise Genie instructions that define:
-# MAGIC 
-# MAGIC - How "revenue" should be calculated (consider which payment types and statuses count)
-# MAGIC - What subscriber statuses qualify as "active"
-# MAGIC - What makes a ticket "open" vs resolved
-# MAGIC - What threshold defines "high churn risk"
-# MAGIC - How ticket priority maps to urgency and SLA targets
-# MAGIC - How to handle zero values in allowance columns
-# MAGIC - The fiscal year definition for NorthWave Telecom
-# MAGIC - How adjustment payments (ADJ) should be treated in financial calculations
-# MAGIC 
-# MAGIC #### Example SQL (add the 5 most critical queries as certified examples)
-# MAGIC 
-# MAGIC Identify the queries most likely to return wrong results without proper context — these are your best candidates for certified examples. Focus on queries that combine multiple coded columns or involve non-obvious aggregation logic. Write and test each query against the actual tables before adding it to the Knowledge Store.
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## Phase 2 (~4-5 hrs): Benchmark & Tune
-# MAGIC 
-# MAGIC # **Tuning Instructions:**
-# MAGIC #
-# MAGIC ### To maximize Genie Space accuracy and performance:
-# MAGIC 
-# MAGIC 1. Review and implement best practices outlined here: https://docs.databricks.com/aws/en/genie/best-practices
-# MAGIC 2. Iteratively test Genie with the benchmark questions below to identify gaps or failure modes.
-# MAGIC 3. Tune your Space by refining instructions, updating column/table descriptions, and validating entity mappings.
-# MAGIC 4. After each round of tuning, re-run the benchmark suite and log the results.
-# MAGIC 5. Focus especially on ambiguous logic (coded columns, revenue calculations, status flags, etc.)—clarify rules in instructions and catalog.
-# MAGIC 6. Document all changes and decisions made during tuning for transparency and reproducibility.
-# MAGIC 
-# MAGIC ### Benchmark Suite
-# MAGIC 
-# MAGIC | # | Question | Difficulty |
-# MAGIC |---|----------|------------|
-# MAGIC | 1 | How many active subscribers do we currently have? | Basic |
-# MAGIC | 2 | What is total revenue collected in the current fiscal year? | Basic |
-# MAGIC | 3 | How many support tickets are currently open? | Basic |
-# MAGIC | 4 | List all current service plans and their monthly fees | Basic |
-# MAGIC | 5 | What is the average monthly fee per subscriber for each plan tier? | Intermediate |
-# MAGIC | 6 | Which region has the highest number of subscribers at risk of churning? | Intermediate |
-# MAGIC | 7 | What is the payment failure rate by payment method? | Intermediate |
-# MAGIC | 8 | How does total mobile data consumption compare across plan tiers? | Intermediate |
-# MAGIC | 9 | What percentage of support tickets were resolved within their SLA target? | Intermediate |
-# MAGIC | 10 | How many new subscribers were acquired through each channel in the last 12 months? | Intermediate |
-# MAGIC | 11 | What is the monthly churn trend over the last 6 months? | Advanced |
-# MAGIC | 12 | What is the net monthly revenue trend after credits and adjustments? | Advanced |
-# MAGIC | 13 | Which active subscribers have both a high churn risk score and a high total payment amount? | Advanced |
-# MAGIC | 14 | What is the average ticket resolution time (in days) by type and priority? | Advanced |
-# MAGIC | 15 | What is the total monthly revenue at risk if all high-churn-risk active subscribers churned? | Advanced |
-# MAGIC 
-# MAGIC **Target:** 13/15 passing (87%)
-# MAGIC 
-# MAGIC **NOTE:** You can find the ground truth SQL queries for benchmarking in the <a href="$./benchmark_sqls">benchmark_sqls</a> notebook.
-# MAGIC Log all your workings and observations with respect to tuning your Genie space to improve accuracy.
-# MAGIC
-# MAGIC ### Final Step — Assessment Validation
-# MAGIC
-# MAGIC Once you have completed all tuning iterations and are satisfied with your benchmark scores, run the <a href="$./assessment_sqls">assessment_sqls</a> notebook as a **one-time** final accuracy check. These questions are **harder** than the benchmark suite — they combine multiple tables, coded fields, implicit business rules, window functions, and subquery logic.
-# MAGIC
-# MAGIC > **Important:** Run the assessment only **once** — do **not** iterate or re-tune based on the results. The purpose is to capture a snapshot of how well your tuned Space handles unseen, harder questions.
-# MAGIC
-# MAGIC 1. Ask each of the 15 assessment questions in your Genie Space and compare the results against the ground-truth SQL output.
-# MAGIC 2. Record a **Pass / Fail** for every question, along with the Genie-generated SQL and the expected SQL.
-# MAGIC 3. For any **failed** question, document:
-# MAGIC    - **Root cause** — what did Genie get wrong? (e.g. wrong join, missing filter, incorrect code mapping, misunderstood business rule)
-# MAGIC    - **Suggested fix** — what change to the Knowledge Store (table/column description, instruction, or example SQL) **would** address the failure? (Do not apply the fix — just describe what you would do.)
-# MAGIC 4. Include the assessment results table in the **Tuning** section of your delivery report.
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## Phase 3 (~1-2 hrs): Monitoring & Delivery Report
-# MAGIC 
-# MAGIC ### Monitoring
-# MAGIC 
-# MAGIC Open the **Monitoring** tab in your Genie Space and explore the built-in monitoring capabilities:
-# MAGIC 
-# MAGIC - Review thumbs-up / thumbs-down feedback on answered questions
-# MAGIC - Identify any failed or low-confidence queries
-# MAGIC - Note patterns in the types of questions that succeed vs. struggle
-# MAGIC - Summarise your observations — what does the monitoring data tell you about the health of your Space?
-# MAGIC 
-# MAGIC ### Delivery Report
-# MAGIC 
-# MAGIC Cover these four sections:
-# MAGIC 
-# MAGIC 1. **Discovery** — what questions did your persona need? Which coded columns caused the most initial failures and why?
-# MAGIC 2. **Design decisions** — what did you add to UC metadata vs. Genie instructions vs. example SQL, and why?
-# MAGIC 3. **Tuning** — how many iterations? Top 3 failure patterns, root cause analysis, and the exact fix applied each time. Include your assessment results table (pass/fail per question, root cause and suggested fix for failures)
-# MAGIC 4. **Monitoring** — observations from the Genie Space monitoring tab: feedback patterns, failed/low-confidence queries, and what the data tells you about the health of your Space
+# MAGIC %md ##Deliverables
+# MAGIC - Confirm the catalog and schema name you have used
+# MAGIC - Export and share Delivery Report created in Step 7
+# MAGIC - Export and share Genie Space as json using Export API below:
+# MAGIC `export DATABRICKS_HOST="https://<your-workspace-url>"
+# MAGIC export DATABRICKS_TOKEN="<your_pat>"
+# MAGIC SPACE_ID="<your_genie_space_id>". -- Open the Genie space in the UI, go to Settings, and copy the space ID from there. 
+# MAGIC ```
+# MAGIC curl -X GET \
+# MAGIC   "$DATABRICKS_HOST/api/2.0/genie/spaces/$SPACE_ID?include_serialized_space=true" \
+# MAGIC   -H "Authorization: Bearer $DATABRICKS_TOKEN" \
+# MAGIC   -H "Content-Type: application/json" ```
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC ## Assessment Rubric
-# MAGIC 
+# MAGIC
 # MAGIC | Area | Weight | Standard |
 # MAGIC |------|--------|----------|
-# MAGIC | Genie Space setup | 10% | All 5 tables, title, description, sample questions |
-# MAGIC | Knowledge Store | 20% | Table descriptions, glossary, 5+ example SQLs |
-# MAGIC | Benchmark score | 15% | ≥ 85% (13+ of 15 passing) |
-# MAGIC | Tuning documentation | 45% | Failure modes documented with root cause and fix |
-# MAGIC | Monitoring + report | 10% | Monitoring observations and 4-section delivery report |
-# MAGIC 
+# MAGIC | Genie Space setup with knowledge store | 30% | A fully configured Genie Space with source tables, knowledge Store with example SQL, table relationships, SQL expressions, and general instructions |
+# MAGIC | Benchmark score | 20% | ≥ 85% (13+ of 15 passing) |
+# MAGIC | Tuning documentation | 40% | Tuning log, discovery findings, lessons learnt, and handover recommendations |
+# MAGIC | AI/BI Dashboard | 10% | Pairing Genie with a sample AI/BI Dashboards |
+# MAGIC
 # MAGIC **Passing threshold:** 80% weighted score
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## Reference
-# MAGIC 
-# MAGIC | Resource | Link |
-# MAGIC |----------|------|
-# MAGIC | AI/BI for Data Analysts course (includes lab setup) | [Partner Academy](https://partner-academy.databricks.com/learn/courses/3707/aibi-for-data-analysts) |
-# MAGIC | Curate an effective Genie Space (best practices) | [Databricks Docs](https://docs.databricks.com/en/genie/best-practices.html) |
-# MAGIC | Genie Space overview | [Databricks Docs](https://docs.databricks.com/en/genie/index.html) |
-# MAGIC | Explore Genie via dbdemos | [dbdemos.ai](https://www.databricks.com/resources/demos/tutorials) |

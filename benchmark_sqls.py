@@ -1,17 +1,38 @@
 # Databricks notebook source
-
-
-# COMMAND ----------
-
 # MAGIC %md
 # MAGIC # NorthWave Telecom — Benchmark SQL Answers
 # MAGIC
-# MAGIC Set the **Catalog** and **Schema** widgets at the top of the notebook, then copy and paste the SQL (with your catalog/schema substituted) for the Genie Space
+# MAGIC Benchmark questions with ground truth SQLs for training/tuning Genie space - MUST score >85%
+# MAGIC ### Benchmark Suite
+# MAGIC
+# MAGIC | # | Question | Difficulty |
+# MAGIC |---|----------|------------|
+# MAGIC | 1 | How many active subscribers do we currently have? | Basic |
+# MAGIC | 2 | What is total revenue collected in the current fiscal year? | Basic |
+# MAGIC | 3 | How many support tickets are currently open? | Basic |
+# MAGIC | 4 | List all current service plans and their monthly fees | Basic |
+# MAGIC | 5 | What is the average monthly fee per subscriber for each plan tier? | Intermediate |
+# MAGIC | 6 | Which region has the highest number of subscribers at risk of churning? | Intermediate |
+# MAGIC | 7 | What is the payment failure rate by payment method? | Intermediate |
+# MAGIC | 8 | How does total mobile data consumption compare across plan tiers? | Intermediate |
+# MAGIC | 9 | What percentage of support tickets were resolved within their SLA target? | Intermediate |
+# MAGIC | 10 | How many new subscribers were acquired through each channel in the last 12 months? | Intermediate |
+# MAGIC | 11 | What is the monthly churn trend over the last 6 months? | Advanced |
+# MAGIC | 12 | What is the net monthly revenue trend after credits and adjustments? | Advanced |
+# MAGIC | 13 | Which active subscribers have both a high churn risk score and a high total payment amount? | Advanced |
+# MAGIC | 14 | What is the average ticket resolution time (in days) by type and priority? | Advanced |
+# MAGIC | 15 | What is the total monthly revenue at risk if all high-churn-risk active subscribers churned? | Advanced |
+# MAGIC
 # MAGIC
 # MAGIC ---
 
 # COMMAND ----------
 
+# MAGIC %md ####Execute next cell to generate widgets
+
+# COMMAND ----------
+
+# DBTITLE 1,widget
 dbutils.widgets.text("catalog", "your_catalog", "Catalog")
 dbutils.widgets.text("schema", "genie_capstone", "Schema")
 
@@ -24,7 +45,9 @@ schema  = dbutils.widgets.get("schema")
 # MAGIC ---
 # MAGIC ## Genie Space — Copy-Paste Ready SQL
 # MAGIC
-# MAGIC The cell below prints all 15 in a clean format you can copy directly into your Genie Space as example SQL.
+# MAGIC Set **Catalog** and **Schema** widgets, run the then copy and paste the SQL (with your catalog/schema substituted) for the Genie Space
+# MAGIC
+# MAGIC Execute cell below tp print all 15 in a clean format you can add directly into your Genie Space as benchmark questions
 
 # COMMAND ----------
 

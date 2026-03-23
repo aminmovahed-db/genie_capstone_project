@@ -1,21 +1,13 @@
 # Databricks notebook source
-
-
-# COMMAND ----------
-
 # MAGIC %md
 # MAGIC # NorthWave Telecom — **Assessment** SQL (harder benchmark)
 # MAGIC
 # MAGIC Use this notebook **after** you have tuned your Genie Space on the standard [benchmark_sqls]($./benchmark_sqls) suite. The questions below are deliberately more difficult: they combine multiple tables, coded fields, implicit business rules (fiscal year, revenue definitions, SLA days, unlimited allowances), window functions, and `HAVING` / subquery logic.
 # MAGIC
-# MAGIC **How to use**
-# MAGIC 1. Set the **Catalog** and **Schema** widgets (same as dataset setup).
-# MAGIC 2. Run all cells — the last cell prints every **natural-language question** with its **expected SQL** for side-by-side comparison against Genie’s answers.
-# MAGIC 3. Ask Genie the same questions in natural language and compare results (row counts, key metrics, and SQL structure — not just prose).
-# MAGIC
-# MAGIC **Fiscal year** for this capstone: **1 April – 31 March** (same as the standard benchmark).
-# MAGIC
-# MAGIC ---
+
+# COMMAND ----------
+
+# MAGIC %md ####Execute next cell to generate widgets
 
 # COMMAND ----------
 
@@ -31,7 +23,9 @@ schema = dbutils.widgets.get("schema")
 # MAGIC ---
 # MAGIC ## Assessment suite — questions and ground-truth SQL
 # MAGIC
-# MAGIC The cell below defines **15** assessment items. Each key is the question you should pose to Genie; each value is the reference SQL (substituted with your catalog/schema).
+# MAGIC Set **Catalog** and **Schema** widgets, run the then copy and paste the SQL (with your catalog/schema substituted) for the Genie Space
+# MAGIC
+# MAGIC Execute cell below tp print all 15 in a clean format you can add directly into your Genie Space as benchmark questions
 
 # COMMAND ----------
 
