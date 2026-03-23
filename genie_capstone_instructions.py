@@ -13,7 +13,7 @@
 # MAGIC 
 # MAGIC ## Objective
 # MAGIC 
-# MAGIC Build, tune, and document a production-grade Genie Space using a realistic telecom subscriber dataset. You will complete this over 5 days at the end of your residency program.
+# MAGIC Build, tune, and document a production-grade Genie Space using a realistic telecom subscriber dataset. Expected effort: **8–10 hours**.
 
 # COMMAND ----------
 
@@ -50,7 +50,7 @@
 # MAGIC | tc_customers | region | NW, SW, NE, SE, MW | Geographic region codes |
 # MAGIC | tc_customers | churn_risk_score | 0–100 integer | Propensity model output |
 # MAGIC | tc_usage | usage_type | V, D, S, R | Type of usage event |
-# MAGIC | tc_usage | unit | MIN, MB, CNT | Unit of measure for quantity |
+# MAGIC | tc_usage | unit | MIN, MB, CNT | Unit of measure for quantity; use 1 GB = 1024 MB for conversions |
 # MAGIC | tc_usage | direction | I, O, NA | Call/SMS direction; not applicable for data |
 # MAGIC | tc_tickets | priority | 1, 2, 3, 4 | Note: lower number = higher urgency |
 # MAGIC | tc_tickets | ticket_type | TEC, BIL, SVC, GEN | Support category |
@@ -80,6 +80,7 @@
 # MAGIC | usage_type V | Voice call | usage_type D | Mobile data |
 # MAGIC | usage_type S | SMS | usage_type R | Roaming data |
 # MAGIC | direction I | Inbound | direction O | Outbound |
+# MAGIC | direction NA | Not applicable (data/roaming) | | |
 # MAGIC | priority 1 | Critical | priority 2 | High |
 # MAGIC | priority 3 | Medium | priority 4 | Low |
 # MAGIC | ticket_type TEC | Technical | ticket_type BIL | Billing |
@@ -100,7 +101,7 @@
 # MAGIC %md
 # MAGIC ## Deliverables
 # MAGIC 
-# MAGIC Submit the following by Day 10:
+# MAGIC Submit the following upon completion:
 # MAGIC 
 # MAGIC 1. A configured Genie Space with all 5 tables
 # MAGIC 2. Knowledge Store — table descriptions, column glossary, 5+ example SQLs
@@ -112,7 +113,7 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## Day 1-2: Build the Genie Space
+# MAGIC ## Phase 1 (~3-4 hrs): Build the Genie Space
 # MAGIC 
 # MAGIC ### 1. Define the business context first
 # MAGIC 
@@ -126,7 +127,6 @@
 # MAGIC 
 # MAGIC - **Title:** NorthWave Telecom — Subscriber Analytics
 # MAGIC - **Description:** Enables customer insights analysts to explore subscriber status, usage trends, payment performance, and support ticket resolution for the NorthWave telecom business
-# MAGIC - **Sample questions:** Add 3–5 from the benchmark list below
 # MAGIC 
 # MAGIC ### 3. Populate the Knowledge Store
 # MAGIC 
@@ -156,7 +156,7 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## Day 3-4: Benchmark & Tune
+# MAGIC ## Phase 2 (~4-5 hrs): Benchmark & Tune
 # MAGIC 
 # MAGIC # **Tuning Instructions:**
 # MAGIC #
@@ -210,7 +210,7 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## Day 5: Monitoring & Delivery Report
+# MAGIC ## Phase 3 (~1-2 hrs): Monitoring & Delivery Report
 # MAGIC 
 # MAGIC ### Monitoring
 # MAGIC 
@@ -228,6 +228,7 @@
 # MAGIC 1. **Discovery** — what questions did your persona need? Which coded columns caused the most initial failures and why?
 # MAGIC 2. **Design decisions** — what did you add to UC metadata vs. Genie instructions vs. example SQL, and why?
 # MAGIC 3. **Tuning** — how many iterations? Top 3 failure patterns, root cause analysis, and the exact fix applied each time. Include your assessment results table (pass/fail per question, root cause and suggested fix for failures)
+# MAGIC 4. **Monitoring** — observations from the Genie Space monitoring tab: feedback patterns, failed/low-confidence queries, and what the data tells you about the health of your Space
 
 # COMMAND ----------
 
@@ -240,7 +241,7 @@
 # MAGIC | Knowledge Store | 20% | Table descriptions, glossary, 5+ example SQLs |
 # MAGIC | Benchmark score | 15% | ≥ 85% (13+ of 15 passing) |
 # MAGIC | Tuning documentation | 45% | Failure modes documented with root cause and fix |
-# MAGIC | Monitoring + report | 10% | Monitoring observations and 3-section delivery report |
+# MAGIC | Monitoring + report | 10% | Monitoring observations and 4-section delivery report |
 # MAGIC 
 # MAGIC **Passing threshold:** 80% weighted score
 

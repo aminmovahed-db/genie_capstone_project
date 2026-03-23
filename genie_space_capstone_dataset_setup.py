@@ -18,7 +18,7 @@
 
 # ── USER CONFIG — set via widgets at the top of the notebook ──────
 dbutils.widgets.text("catalog", "your_catalog", "Catalog")
-dbutils.widgets.text("schema", "genie_capston", "Schema")
+dbutils.widgets.text("schema", "genie_capstone", "Schema")
 CATALOG = dbutils.widgets.get("catalog")
 SCHEMA  = dbutils.widgets.get("schema")
 # ─────────────────────────────────────────────────────────────────

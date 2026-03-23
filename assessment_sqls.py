@@ -20,7 +20,7 @@
 # COMMAND ----------
 
 dbutils.widgets.text("catalog", "your_catalog", "Catalog")
-dbutils.widgets.text("schema", "genie_capston", "Schema")
+dbutils.widgets.text("schema", "genie_capstone", "Schema")
 
 catalog = dbutils.widgets.get("catalog")
 schema = dbutils.widgets.get("schema")
@@ -37,22 +37,17 @@ schema = dbutils.widgets.get("schema")
 
 ASSESSMENT_QUERIES = {
     "A1 — For active subscribers only, which acquisition channel has the highest median churn risk score?": f"""
-WITH channel_median AS (
-    SELECT CASE tc_customers.acq_channel WHEN 'ONL' THEN 'Online' WHEN 'RET' THEN 'Retail' WHEN 'REF' THEN 'Referral' WHEN 'TEL' THEN 'Telesales' END,
-           percentile_approx(churn_risk_score, 0.5) AS median_risk
-    FROM {catalog}.{schema}.tc_customers
-    WHERE status = 'A'
-    GROUP BY acq_channel
-)
 SELECT CASE acq_channel
            WHEN 'ONL' THEN 'Online'
            WHEN 'RET' THEN 'Retail'
            WHEN 'REF' THEN 'Referral'
            WHEN 'TEL' THEN 'Telesales'
        END      AS channel_name,
-       median_risk
-FROM channel_median
-ORDER BY median_risk DESC
+       percentile_approx(churn_risk_score, 0.5) AS median_risk
+FROM {catalog}.{schema}.tc_customers
+WHERE status = 'A'
+GROUP BY acq_channel
+ORDER BY median_risk DESC, acq_channel
 LIMIT 1
 """,
 

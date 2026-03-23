@@ -13,7 +13,7 @@
 # COMMAND ----------
 
 dbutils.widgets.text("catalog", "your_catalog", "Catalog")
-dbutils.widgets.text("schema", "genie_capston", "Schema")
+dbutils.widgets.text("schema", "genie_capstone", "Schema")
 
 catalog = dbutils.widgets.get("catalog")
 schema  = dbutils.widgets.get("schema")
