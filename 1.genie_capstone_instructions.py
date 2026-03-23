@@ -100,9 +100,9 @@
 
 # MAGIC %md ##Implementation Steps
 # MAGIC
-# MAGIC Step 1: Run <a href="$./genie_space_capstone_dataset_setup">genie_space_capstone_dataset_setup</a> to create tables and data in your own workspace, catalog and schema
+# MAGIC Step 1: Run <a href="$./2.genie_space_capstone_dataset_setup">genie_space_capstone_dataset_setup</a> to create tables and data in your own workspace, catalog and schema
 # MAGIC
-# MAGIC Step 2: Create empty Genie Space, add <a href="$./benchmark_sqls">benchmark_sqls</a> to the space — the notebook contains benchmark questions with ground truth SQLs for training/tuning Genie space - MUST score >85%
+# MAGIC Step 2: Create empty Genie Space, add <a href="$./3.benchmark_sqls">benchmark_sqls</a> to the space — the notebook contains benchmark questions with ground truth SQLs for training/tuning Genie space - MUST score >85%
 # MAGIC
 # MAGIC Step 3: Run benchmark Evaluation to generate baseline accuracy
 # MAGIC
@@ -110,9 +110,9 @@
 # MAGIC
 # MAGIC Step 5: Frequently run Benchmark Evaluations on all benchmark questions to show progress - Go back to Step 4 until target >85% is achieved
 # MAGIC
-# MAGIC Step 6: Once you have achieved accuracy score, add <a href="$./assessment_sqls">assessment_sqls</a> to the space and run Benmark evaluations on these queries. - These queries are only for cross validating tuned Genie space - DO NOT tune with these queries. **NOTE**: You are not marked based on accuracy of assessment queries, but please record your the result in the delivery report
+# MAGIC Step 6: Once you have achieved accuracy score, add <a href="$./4.assessment_sqls">assessment_sqls</a> to the space and run Benmark evaluations on these queries. - These queries are only for cross validating tuned Genie space - DO NOT tune with these queries. **NOTE**: You are not marked based on accuracy of assessment queries, but please record your the result in the delivery report
 # MAGIC
-# MAGIC Step 7: Capture your tuning logs, key findings, lessons learnt in delivery report following this template  <a href="$./sample_report">sample_report</a> and sumbit for assessment
+# MAGIC Step 7: Capture your tuning logs, key findings, lessons learnt in delivery report following this template  <a href="$./5.sample_report">sample_report</a> and sumbit for assessment
 
 # COMMAND ----------
 
