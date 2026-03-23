@@ -1,0 +1,19 @@
+name: Auto-approve aaron PRs
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  auto-approve:
+    if: github.event.pull_request.user.login == 'aaron-pan_data'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Auto-approve PR
+        run: gh pr review "$PR_URL" --approve --body "Auto-approved for aaron-pan_data"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
