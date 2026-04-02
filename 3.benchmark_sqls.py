@@ -61,8 +61,8 @@ WHERE status = 'A'
     "Q2 — What is total revenue collected in the current fiscal year?": f"""
 SELECT ROUND(SUM(
     CASE
-        WHEN pmt_status = 'S' AND payment_type IN ('MRC', 'OTC') THEN  amount
-        WHEN pmt_status = 'R' AND payment_type IN ('MRC', 'OTC') THEN -amount
+        WHEN pmt_status = 'successful' AND payment_type IN ('MRC', 'OTC') THEN  amount
+        WHEN pmt_status = 'refunded' AND payment_type IN ('MRC', 'OTC') THEN -amount
         ELSE 0
     END), 2) AS total_revenue_collected
 FROM {catalog}.{schema}.tc_payments
@@ -118,7 +118,7 @@ LIMIT 1
 
     "Q7 — What is the payment failure rate by payment method?": f"""
 SELECT CASE pmt_method WHEN 'CC' THEN 'Credit Card' WHEN 'DD' THEN 'Direct Debit' WHEN 'BT' THEN 'Bank Transfer' WHEN 'WT' THEN 'Wallet' END as payment_method,
-       ROUND(100.0 * SUM(CASE WHEN pmt_status = 'F' THEN 1 ELSE 0 END) / COUNT(*), 2) AS failure_rate_pct
+       ROUND(100.0 * SUM(CASE WHEN pmt_status = 'failed' THEN 1 ELSE 0 END) / COUNT(*), 2) AS failure_rate_pct
 FROM {catalog}.{schema}.tc_payments
 GROUP BY payment_method
 """,
@@ -175,8 +175,8 @@ ORDER BY churn_month
     "Q12 — What is the net monthly revenue trend after credits and adjustments?": f"""
 SELECT billing_month,
        ROUND(SUM(CASE
-               WHEN payment_type IN ('MRC','OTC') AND pmt_status = 'S' THEN  amount
-               WHEN payment_type IN ('MRC','OTC') AND pmt_status = 'R' THEN -amount
+               WHEN payment_type IN ('MRC','OTC') AND pmt_status = 'successful' THEN  amount
+               WHEN payment_type IN ('MRC','OTC') AND pmt_status = 'refunded' THEN -amount
                WHEN payment_type = 'ADJ'                               THEN  amount
                ELSE 0 END), 2)                                         AS net_revenue
 FROM {catalog}.{schema}.tc_payments
@@ -189,8 +189,8 @@ WITH subscriber_payments AS (
     SELECT customer_id,
            ROUND(SUM(
                CASE
-                   WHEN pmt_status = 'S' AND payment_type IN ('MRC','OTC') THEN  amount
-                   WHEN pmt_status = 'R' AND payment_type IN ('MRC','OTC') THEN -amount
+                   WHEN pmt_status = 'successful' AND payment_type IN ('MRC','OTC') THEN  amount
+                   WHEN pmt_status = 'refunded' AND payment_type IN ('MRC','OTC') THEN -amount
                    ELSE 0
                END
            ), 2) AS total_paid

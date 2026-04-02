@@ -49,9 +49,6 @@
 # MAGIC | | | 2 | Standard | |
 # MAGIC | | | 3 | Premium | |
 # MAGIC | | | 4 | Enterprise | |
-# MAGIC | | contract_type | M | Monthly | Single-letter codes only |
-# MAGIC | | | A | Annual | |
-# MAGIC | | | B | Biennial (2-year) | |
 # MAGIC | | data_gb | 0 | Unlimited | 0 does NOT mean zero — it means unlimited |
 # MAGIC | | voice_min | 0 | Unlimited | 0 does NOT mean zero — it means unlimited |
 # MAGIC | | | | | |
@@ -77,9 +74,6 @@
 # MAGIC | | unit | MIN | Minutes | Unit of measure; use 1 GB = 1024 MB for conversions |
 # MAGIC | | | MB | Megabytes | |
 # MAGIC | | | CNT | Count | |
-# MAGIC | | direction | I | Inbound | Call/SMS direction |
-# MAGIC | | | O | Outbound | |
-# MAGIC | | | NA | Not applicable | For data/roaming |
 # MAGIC | | | | | |
 # MAGIC | tc_tickets | priority | 1 | Critical | Lower number = higher urgency; SLA: 1 day |
 # MAGIC | | | 2 | High | SLA: 2 days |
@@ -101,10 +95,6 @@
 # MAGIC | | | DD | Direct Debit | |
 # MAGIC | | | BT | Bank Transfer | |
 # MAGIC | | | WT | Wallet / prepaid | |
-# MAGIC | | pmt_status | S | Successful | Transaction outcome |
-# MAGIC | | | F | Failed | |
-# MAGIC | | | P | Pending | |
-# MAGIC | | | R | Refunded | |
 # MAGIC | | | | | |
 # MAGIC | — | Fiscal year | — | April – March | |
 

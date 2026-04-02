@@ -89,7 +89,7 @@
 # MAGIC
 # MAGIC | Layer | What we added (sample) | Rationale |
 # MAGIC |-------|-------------------------|-----------|
-# MAGIC | **Unity Catalog** | Table comments describing domain; column comments on every coded field using the instruction notebook’s **Column Reference** and **Decode Table** | UC is durable, travels with the data, and is the first line of defense for codes (`usage_type`, `pmt_status`, regions, etc.) |
+# MAGIC | **Unity Catalog** | Table comments describing domain; column comments on every coded field using the instruction notebook’s **Column Reference** and **Decode Table** | UC is durable, travels with the data, and is the first line of defense for codes (`usage_type`, regions, etc.) |
 # MAGIC | **Genie Instructions** | Single source of truth for: revenue definition, active definition, open ticket, churn threshold, SLA calendar days, FY definition, unlimited allowances, treatment of ADJ in “net” vs “collected” revenue | Short, imperative rules reduce hallucination when questions span multiple tables |
 # MAGIC | **Certified example SQL** | Five patterns prioritized: (1) active count, (2) FY revenue with `CASE` + date window, (3) open tickets, (4) SLA % with `DATEDIFF` + priority map, (5) net monthly trend with ADJ | Matches the most failure-prone benchmark questions; copied from [benchmark_sqls]($./benchmark_sqls) and validated in SQL editor first |
 # MAGIC
@@ -111,7 +111,7 @@
 # MAGIC
 # MAGIC | # | Pattern | Root cause (sample) | Fix applied |
 # MAGIC |---|---------|---------------------|-------------|
-# MAGIC | 1 | **Revenue / fiscal year wrong** | Model defaulted to calendar year and summed all payment rows | Instructions: define FY Apr–Mar; revenue = `pmt_status = 'S'` MRC+OTC minus refunds on MRC+OTC; date filter on `payment_date`. Optional: paste Q2 SQL as certified example. |
+# MAGIC | 1 | **Revenue / fiscal year wrong** | Model defaulted to calendar year and summed all payment rows | Instructions: define FY Apr–Mar; revenue = `pmt_status = 'successful'` MRC+OTC minus refunds on MRC+OTC; date filter on `payment_date`. Optional: paste Q2 SQL as certified example. |
 # MAGIC | 2 | **“Open tickets” over/under-counted** | Assumed a status column or “not closed” without matching schema | Instructions: open = `resolved_date IS NULL`. UC comment on `resolved_date`. |
 # MAGIC | 3 | **Tier / usage questions mis-joined** | Weak join path customer → plan; `usage_type` for data not set to `'D'` | UC on `usage_type`; example SQL for Q8-style join and `WHERE usage_type = 'D'`; confirm `plan_id` on `tc_customers`. |
 

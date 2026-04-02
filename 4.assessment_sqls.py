@@ -55,7 +55,7 @@ SELECT CASE p.plan_tier
        COUNT(*) AS subscriber_count
 FROM {catalog}.{schema}.tc_customers c
 JOIN {catalog}.{schema}.tc_plans p ON c.plan_id = p.plan_id
-WHERE p.contract_type IN ('A', 'B')
+WHERE p.contract_type IN ('annual', 'biennial')
 GROUP BY p.plan_tier
 ORDER BY p.plan_tier
 """,
@@ -146,10 +146,7 @@ SELECT CASE c.`region`
       WHEN 'MW' THEN 'Midwest'
       ELSE 'Other'
       END AS region_name,
-       CASE u.direction
-           WHEN 'I' THEN 'Inbound'
-           WHEN 'O' THEN 'Outbound'
-       END      AS call_direction,
+       u.direction AS call_direction,
        ROUND(SUM(u.quantity), 0) AS total_minutes
 FROM {catalog}.{schema}.tc_usage u
 JOIN {catalog}.{schema}.tc_customers c ON u.customer_id = c.customer_id
@@ -173,7 +170,7 @@ ORDER BY p.plan_name
 """,
 
     "A11 — What percentage of all payment rows are successful (pmt_status S), counting every payment type?": f"""
-SELECT ROUND(100.0 * SUM(CASE WHEN pmt_status = 'S' THEN 1 ELSE 0 END) / COUNT(*), 2) AS success_rate_pct
+SELECT ROUND(100.0 * SUM(CASE WHEN pmt_status = 'successful' THEN 1 ELSE 0 END) / COUNT(*), 2) AS success_rate_pct
 FROM {catalog}.{schema}.tc_payments
 """,
 
@@ -221,7 +218,7 @@ WHERE rnk = 1
 SELECT ROUND(SUM(amount), 2) AS total_adjustment_amount_fy
 FROM {catalog}.{schema}.tc_payments
 WHERE payment_type = 'ADJ'
-  AND pmt_status = 'S'
+  AND pmt_status = 'successful'
   AND payment_date >= '2025-04-01'
   AND payment_date < '2026-04-01'
 """,
