@@ -116,10 +116,10 @@ SELECT CASE c.`region`
       ELSE 'Other'
       END AS region_name,
        COUNT(*) AS suspended_subscribers
-FROM {catalog}.{schema}.tc_customers
-WHERE status = 'S'
+FROM {catalog}.{schema}.tc_customers c
+WHERE c.status = 'S'
 GROUP BY region_name
-ORDER BY suspended_subscribers DESC, region
+ORDER BY suspended_subscribers DESC, region_name
 LIMIT 3
 """,
 
