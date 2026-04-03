@@ -17,7 +17,7 @@
 # MAGIC | **1** | Unity Catalog table + column comments (coded columns, unlimited = 0) | 6 | 60% | Revenue and SLA still wrong; churn “high risk” threshold vague |
 # MAGIC | **2** | Genie **Instructions**: active = `A`, revenue rules, FY Apr–Mar, open ticket = `resolved_date IS NULL`, churn > 70, SLA days by priority | 7 | 70% | Q7 net revenue (ADJ), Q8 “high payment” definition, Q9 grouping edge cases |
 # MAGIC | **3** | **5+ certified example SQLs** (from benchmark_sqls, edited for your catalog/schema) | 9 | 90% | meets **≥ 85%** bar; optional push to 10/10 with one more certified example  |
-# MAGIC | **4 - Cross-validation** | validation on assessment sqls | **10** | **67%** | a lower score indicates either new patterns in assessment sql, space not tuned optimally or overfitting |
+# MAGIC | **4 - Cross-validation** | validation on assessment sqls | **5** | **71%** | a lower score indicates either new patterns in assessment sql, space not tuned optimally or overfitting |
 # MAGIC
 # MAGIC ### Final Benchmark Question Result - run 3
 # MAGIC
@@ -39,22 +39,14 @@
 # MAGIC | A# | Question (short) | Result | Root cause of failure (if any) | Suggested fix (not applied) |
 # MAGIC |----|------------------|--------|-------------------------------|----------------------------|
 # MAGIC | A1 | Channel with highest median churn risk | Pass | — | — |
-# MAGIC | A2 | Annual/biennial subscribers by tier | Pass | — | — |
-# MAGIC | A3 | Total roaming GB | Pass | — | — |
-# MAGIC | A4 | Subscribers spending 20%+ above plan fee | **Fail** | Genie compared `monthly_spend` to `monthly_fee` directly instead of multiplying by 1.2 | Add an instruction: "spending above plan fee" means `monthly_spend > monthly_fee * 1.2` when a percentage is stated |
-# MAGIC | A5 | Open critical tickets by region | Pass | — | — |
-# MAGIC | A6 | Avg satisfaction when SLA missed | **Fail** | Genie used a fixed SLA of 3 days for all priorities instead of the per-priority map | Add a certified example SQL showing the `CASE priority WHEN 1 THEN 1 …` SLA logic inside a `DATEDIFF` comparison |
-# MAGIC | A7 | Top 3 regions by suspended subscribers | Pass | — | — |
-# MAGIC | A8 | Active subscribers with 3+ billing tickets in 12 mo | Pass | — | — |
-# MAGIC | A9 | Voice minutes by region and direction | Pass | — | — |
-# MAGIC | A10 | Unlimited data plans — active subscriber count | **Fail** | Genie filtered `data_gb IS NULL` instead of `data_gb = 0` | Reinforce in UC column comment and instructions that `data_gb = 0` means **unlimited**, not zero or NULL |
-# MAGIC | A11 | Overall payment success rate % | Pass | — | — |
-# MAGIC | A12 | Churned customers — plans ranked by avg lifetime | Pass | — | — |
-# MAGIC | A13 | High-risk long-tenure active subscribers by tier | Pass | — | — |
-# MAGIC | A14 | Regional top spenders (rank 1 per region) | Pass | — | — |
-# MAGIC | A15 | FY adjustment amount (ADJ, successful only) | Pass | — | — |
+# MAGIC | A2 | Subscribers spending 20%+ above plan fee | **Fail** | Genie compared `monthly_spend` to `monthly_fee` directly instead of multiplying by 1.2 | Add an instruction: “spending above plan fee” means `monthly_spend > monthly_fee * 1.2` when a percentage is stated |
+# MAGIC | A3 | Voice minutes by region and direction | Pass | — | — |
+# MAGIC | A4 | Active subscribers with 3+ billing tickets in 12 mo | Pass | — | — |
+# MAGIC | A5 | Unlimited data plans — active subscriber count | **Fail** | Genie filtered `data_gb IS NULL` instead of `data_gb = 0` | Reinforce in UC column comment and instructions that `data_gb = 0` means **unlimited**, not zero or NULL |
+# MAGIC | A6 | Regional top spenders (rank 1 per region) | Pass | — | — |
+# MAGIC | A7 | FY adjustment amount (ADJ, successful only) | Pass | — | — |
 # MAGIC
-# MAGIC **Sample score:** 12 / 15 (80%)
+# MAGIC **Sample score:** 5 / 7 (71%)
 
 # COMMAND ----------
 
