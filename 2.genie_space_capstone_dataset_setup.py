@@ -45,21 +45,21 @@ def _d(start: date, end: date) -> date:
 # MAGIC
 # MAGIC Ambiguities:
 # MAGIC - `plan_tier`: `1=Basic`, `2=Standard`, `3=Premium`, `4=Enterprise`
-# MAGIC - `contract_type`: `M=Monthly`, `A=Annual`, `B=Biennial`
+# MAGIC - `contract_type`: `monthly`, `annual`, `biennial`
 # MAGIC - `data_gb = 0` means unlimited
 # MAGIC - `voice_min = 0` means unlimited
 
 # COMMAND ----------
 
 plans_rows = [
-    ("PLN001", "Starter 4G",      1,   5,  200,  24.99, "M", True ),
-    ("PLN002", "Basic 5G",        1,  10,  500,  34.99, "M", True ),
-    ("PLN003", "Standard 5G",     2,  25,    0,  49.99, "M", True ),
-    ("PLN004", "Standard 5G+",    2,  50,    0,  59.99, "A", True ),
-    ("PLN005", "Premium 5G",      3, 100,    0,  79.99, "M", True ),
-    ("PLN006", "Premium 5G Max",  3,   0,    0,  99.99, "A", True ),
-    ("PLN007", "Enterprise 5G",   4,   0,    0, 149.99, "B", True ),
-    ("PLN008", "Legacy 3G",       1,   2,  100,  14.99, "M", False),
+    ("PLN001", "Starter 4G",      1,   5,  200,  24.99, "monthly",  True ),
+    ("PLN002", "Basic 5G",        1,  10,  500,  34.99, "monthly",  True ),
+    ("PLN003", "Standard 5G",     2,  25,    0,  49.99, "monthly",  True ),
+    ("PLN004", "Standard 5G+",    2,  50,    0,  59.99, "annual",   True ),
+    ("PLN005", "Premium 5G",      3, 100,    0,  79.99, "monthly",  True ),
+    ("PLN006", "Premium 5G Max",  3,   0,    0,  99.99, "annual",   True ),
+    ("PLN007", "Enterprise 5G",   4,   0,    0, 149.99, "biennial", True ),
+    ("PLN008", "Legacy 3G",       1,   2,  100,  14.99, "monthly",  False),
 ]
 
 plans_cols = [
@@ -182,7 +182,7 @@ print(f"tc_customers: {df_custs.count():>6,} rows")
 # MAGIC Ambiguities:
 # MAGIC - `usage_type`: `V=Voice`, `D=Data`, `S=SMS`, `R=Roaming`
 # MAGIC - `unit`: `MIN`, `MB`, `CNT`
-# MAGIC - `direction`: `I=Inbound`, `O=Outbound`, `NA=Not applicable`
+# MAGIC - `direction`: `inbound`, `outbound`, `not_applicable`
 
 # COMMAND ----------
 
@@ -197,13 +197,13 @@ for i in range(1, 7001):
     unit = UNIT_MAP[utype]
 
     if utype == "V":
-        qty, direction = round(random.uniform(0.5, 90.0), 1), random.choice(["I", "O"])
+        qty, direction = round(random.uniform(0.5, 90.0), 1), random.choice(["inbound", "outbound"])
     elif utype == "D":
-        qty, direction = round(random.uniform(5.0, 9000.0), 1), "NA"
+        qty, direction = round(random.uniform(5.0, 9000.0), 1), "not_applicable"
     elif utype == "S":
-        qty, direction = float(random.randint(1, 30)), random.choice(["I", "O"])
+        qty, direction = float(random.randint(1, 30)), random.choice(["inbound", "outbound"])
     else:
-        qty, direction = round(random.uniform(1.0, 400.0), 1), "NA"
+        qty, direction = round(random.uniform(1.0, 400.0), 1), "not_applicable"
 
     roaming = 1 if utype == "R" else (1 if random.random() < 0.02 else 0)
 
@@ -301,13 +301,13 @@ print(f"tc_tickets:   {df_tickets.count():>6,} rows")
 # MAGIC Ambiguities:
 # MAGIC - `payment_type`: `MRC`, `OTC`, `ADJ`
 # MAGIC - `pmt_method`: `CC`, `DD`, `BT`, `WT`
-# MAGIC - `pmt_status`: `S`, `F`, `P`, `R`
-# MAGIC - Revenue should only include successful `MRC` and `OTC`
+# MAGIC - `pmt_status`: `successful`, `failed`, `pending`, `refunded`
+# MAGIC - Revenue should only include `successful` `MRC` and `OTC`
 # MAGIC - `ADJ` amounts are negative and excluded from revenue totals
 
 # COMMAND ----------
 
-PMT_STATUS_POOL = ["S"] * 78 + ["F"] * 9 + ["P"] * 8 + ["R"] * 5
+PMT_STATUS_POOL = ["successful"] * 78 + ["failed"] * 9 + ["pending"] * 8 + ["refunded"] * 5
 PMT_METHODS = ["CC", "DD", "BT", "WT"]
 
 payments_rows = []
@@ -364,7 +364,7 @@ for _ in range(110):
         amount,
         "ADJ",
         random.choice(PMT_METHODS),
-        "S",
+        "successful",
         bm
     ))
     pid += 1
