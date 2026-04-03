@@ -21,18 +21,18 @@
 # MAGIC
 # MAGIC ### Final Benchmark Question Result - run 3
 # MAGIC
-# MAGIC | Q# | Question (short) | Final result (sample) |
-# MAGIC |----|------------------|------------------------|
-# MAGIC | 1 | Region / churn risk | Pass |
-# MAGIC | 2 | Payment failure rate | Pass |
-# MAGIC | 3 | Data by tier | Pass |
-# MAGIC | 4 | SLA % | Pass |
-# MAGIC | 5 | Acq channel 12 mo | Pass |
-# MAGIC | 6 | Churn trend 6 mo | Pass |
-# MAGIC | 7 | Net monthly revenue | Pass |
-# MAGIC | 8 | High risk + high pay | Pass |
-# MAGIC | 9 | Avg resolution by type/priority | **Fail (sample)** — e.g. wrong handling of ticket date filters until a Q9-style example is certified; your run may Pass |
-# MAGIC | 10 | Revenue at risk | Pass (after clarifying high-churn + active + `monthly_spend` in UC comments) |
+# MAGIC | Q# | Question (short) | Result | Root cause of failure (if any) | Fix applied | Run fixed |
+# MAGIC |----|------------------|--------|-------------------------------|-------------|-----------|
+# MAGIC | 1 | Region / churn risk | Pass | `churn_risk_score > 70` not understood | UC column comment + instruction: high risk = `> 70` | Run 2 |
+# MAGIC | 2 | Payment failure rate | Pass | `pmt_method` codes not decoded | UC column comment with code meanings | Run 1 |
+# MAGIC | 3 | Data by tier | Pass | Join path `usage → customer → plan` not discovered; `usage_type = 'D'` missed | UC column comment on `usage_type`; certified example SQL for the 3-table join | Run 3 |
+# MAGIC | 4 | SLA % | Pass | Priority-to-days SLA mapping unknown | Instruction: SLA days 1→1, 2→2, 3→3, 4→5; certified example SQL with `DATEDIFF` + `CASE` | Run 3 |
+# MAGIC | 5 | Acq channel 12 mo | Pass | `acq_channel` codes not decoded | UC column comment with code meanings | Run 1 |
+# MAGIC | 6 | Churn trend 6 mo | Pass | `status = 'C'` not mapped to "churned" | UC column comment + instruction: churned = `'C'` | Run 2 |
+# MAGIC | 7 | Net monthly revenue | Pass | ADJ rows included incorrectly in revenue sum | Instruction: net revenue = successful MRC+OTC minus refunded MRC+OTC plus ADJ | Run 2 |
+# MAGIC | 8 | High risk + high pay | Pass | "High total payment" threshold undefined | Instruction: high = above average total payment across all subscribers | Run 2 |
+# MAGIC | 9 | Avg resolution by type/priority | **Fail (sample)** | Ticket date filters handled incorrectly; `ticket_type` codes not decoded | Partially fixed with UC comments; would need a Q9-style certified example SQL to fully resolve | — |
+# MAGIC | 10 | Revenue at risk | Pass | `monthly_spend` column not discovered for revenue-at-risk calculation | UC column comment on `monthly_spend` clarifying it represents current monthly billing | Run 1 |
 # MAGIC
 # MAGIC ### Assessment Question Result - run 4
 # MAGIC
@@ -96,11 +96,11 @@
 # MAGIC
 # MAGIC ### Top 3 failure patterns (sample)
 # MAGIC
-# MAGIC | # | Pattern | Root cause (sample) | Fix applied |
-# MAGIC |---|---------|---------------------|-------------|
-# MAGIC | 1 | **Revenue / fiscal year wrong** | Model defaulted to calendar year and summed all payment rows | Instructions: define FY Apr–Mar; revenue = `pmt_status = 'successful'` MRC+OTC minus refunds on MRC+OTC; date filter on `payment_date`. Optional: paste the revenue SQL as a certified example. |
-# MAGIC | 2 | **“Open tickets” over/under-counted** | Assumed a status column or “not closed” without matching schema | Instructions: open = `resolved_date IS NULL`. UC comment on `resolved_date`. |
-# MAGIC | 3 | **Tier / usage questions mis-joined** | Weak join path customer → plan; `usage_type` for data not set to `'D'` | UC on `usage_type`; example SQL for Q3-style join and `WHERE usage_type = 'D'`; confirm `plan_id` on `tc_customers`. |
+# MAGIC | # | Pattern | Root cause (sample) | Fix applied | Accuracy before → after |
+# MAGIC |---|---------|---------------------|-------------|------------------------|
+# MAGIC | 1 | **Revenue / fiscal year wrong** | Model defaulted to calendar year and summed all payment rows | Instructions: define FY Apr–Mar; revenue = `pmt_status = 'successful'` MRC+OTC minus refunds on MRC+OTC; date filter on `payment_date`. Optional: paste the revenue SQL as a certified example. | 40% → 70% (Run 0 → Run 2) |
+# MAGIC | 2 | **“Open tickets” over/under-counted** | Assumed a status column or “not closed” without matching schema | Instructions: open = `resolved_date IS NULL`. UC comment on `resolved_date`. | 60% → 70% (Run 1 → Run 2) |
+# MAGIC | 3 | **Tier / usage questions mis-joined** | Weak join path customer → plan; `usage_type` for data not set to `'D'` | UC on `usage_type`; example SQL for Q3-style join and `WHERE usage_type = 'D'`; confirm `plan_id` on `tc_customers`. | 70% → 90% (Run 2 → Run 3) |
 
 # COMMAND ----------
 
