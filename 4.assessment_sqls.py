@@ -25,7 +25,7 @@ schema = dbutils.widgets.get("schema")
 # MAGIC
 # MAGIC Set **Catalog** and **Schema** widgets, run the then copy and paste the SQL (with your catalog/schema substituted) for the Genie Space
 # MAGIC
-# MAGIC Execute cell below tp print all 7 in a clean format you can add directly into your Genie Space as benchmark questions
+# MAGIC Execute cell below to print all 7 in a clean format you can add directly into your Genie Space as benchmark questions
 
 # COMMAND ----------
 
