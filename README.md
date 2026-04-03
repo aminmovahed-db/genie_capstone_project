@@ -9,8 +9,8 @@ Capstone project for building, tuning, and documenting a production-grade [Datab
 | `1.genie_capstone_instructions.py` | Main instructions — project brief, column reference, decode tables, implementation steps, deliverables, and assessment rubric |
 | `2.genie_space_capstone_dataset_setup.py` | Data-generation notebook — creates all 5 tables with synthetic data |
 | `3.benchmark_sqls.py` | Benchmark questions with ground truth SQLs for training/tuning Genie space — MUST score >85% |
-| `4.assessment_sqls.py` | 15 harder assessment questions for cross-validating tuned Genie space — DO NOT tune with these queries |
-| `5.sample_report.py` | Delivery-report template — tuning log, discovery findings, lessons learnt, and handover recommendations |
+| `4.assessment_sqls.py` | 7 harder assessment questions for cross-validating tuned Genie space — DO NOT tune with these queries |
+| `sample_report.py` | Delivery-report template — tuning log, discovery findings, lessons learnt, and handover recommendations |
 
 All files are Databricks `.py` source format. Import them into a Databricks workspace to run.
 
