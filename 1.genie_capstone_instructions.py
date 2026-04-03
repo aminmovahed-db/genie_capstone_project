@@ -91,6 +91,7 @@
 # MAGIC | tc_payments | payment_type | MRC | Monthly Recurring Charge | Type of charge; ADJ amounts may be negative |
 # MAGIC | | | OTC | One-Time Charge | |
 # MAGIC | | | ADJ | Adjustment / credit | |
+# MAGIC | | total payment amount | > avg | High | A subscriber's total payment amount is "high" when it exceeds the average total payment across all subscribers |
 # MAGIC | | pmt_method | CC | Credit Card | Payment instrument |
 # MAGIC | | | DD | Direct Debit | |
 # MAGIC | | | BT | Bank Transfer | |

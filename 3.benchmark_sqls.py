@@ -241,8 +241,7 @@ ORDER BY
 """,
 
     "Q15 — What is the total monthly revenue at risk if all high-churn-risk active subscribers churned?": f"""
-SELECT COUNT(*)                        AS high_risk_active_subscribers,
-       ROUND(SUM(monthly_spend), 2)    AS monthly_revenue_at_risk
+SELECT ROUND(SUM(monthly_spend), 2) AS monthly_revenue_at_risk
 FROM {catalog}.{schema}.tc_customers
 WHERE status = 'A'
   AND churn_risk_score > 70
