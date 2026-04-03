@@ -11,33 +11,28 @@
 # MAGIC ## Tuning Log
 # MAGIC The table below shows a **plausible learning curve** (not your actual data). Benchmark progress after major tuning steps (sample scores)
 # MAGIC
-# MAGIC | Run | What changed | Score (pass / 15) | % | Notes (sample) |
+# MAGIC | Run | What changed | Score (pass / 10) | % | Notes (sample) |
 # MAGIC |------|----------------|------------------:|--:|----------------|
-# MAGIC | **0 — Baseline** | Space created, tables attached, minimal / empty Knowledge Store | 7 | 47% | Failures on revenue, fiscal year, `status` codes, open tickets, tier labels |
-# MAGIC | **1** | Unity Catalog table + column comments (coded columns, unlimited = 0) | 10 | 67% | Revenue and SLA still wrong; churn “high risk” threshold vague |
-# MAGIC | **2** | Genie **Instructions**: active = `A`, revenue rules, FY Apr–Mar, open ticket = `resolved_date IS NULL`, churn > 70, SLA days by priority | 12 | 80% | Q12 net revenue (ADJ), Q13 “high payment” definition, Q14 grouping edge cases |
-# MAGIC | **3** | **5+ certified example SQLs** (from benchmark_sqls, edited for your catalog/schema) | 13 | 87% | meets **≥ 85%** bar; optional push to 15/15 with one more certified example  |
-# MAGIC | **4 - Cross-validation** | validation on assessment sqls | **10** | **80%** | a lower score indicates either new patterns in assessment sql, space not tuned optimally or overfitting |
+# MAGIC | **0 — Baseline** | Space created, tables attached, minimal / empty Knowledge Store | 4 | 40% | Failures on revenue, fiscal year, `status` codes, SLA, tier labels |
+# MAGIC | **1** | Unity Catalog table + column comments (coded columns, unlimited = 0) | 6 | 60% | Revenue and SLA still wrong; churn “high risk” threshold vague |
+# MAGIC | **2** | Genie **Instructions**: active = `A`, revenue rules, FY Apr–Mar, open ticket = `resolved_date IS NULL`, churn > 70, SLA days by priority | 7 | 70% | Q7 net revenue (ADJ), Q8 “high payment” definition, Q9 grouping edge cases |
+# MAGIC | **3** | **5+ certified example SQLs** (from benchmark_sqls, edited for your catalog/schema) | 9 | 90% | meets **≥ 85%** bar; optional push to 10/10 with one more certified example  |
+# MAGIC | **4 - Cross-validation** | validation on assessment sqls | **10** | **67%** | a lower score indicates either new patterns in assessment sql, space not tuned optimally or overfitting |
 # MAGIC
 # MAGIC ### Final Benchmark Question Result - run 3
 # MAGIC
 # MAGIC | Q# | Question (short) | Final result (sample) |
 # MAGIC |----|------------------|------------------------|
-# MAGIC | 1 | Active subscribers | Pass |
-# MAGIC | 2 | FY revenue | Pass |
-# MAGIC | 3 | Open tickets | Pass |
-# MAGIC | 4 | Plans and fees | Pass |
-# MAGIC | 5 | Avg fee by tier | Pass |
-# MAGIC | 6 | Region / churn risk | Pass |
-# MAGIC | 7 | Payment failure rate | Pass |
-# MAGIC | 8 | Data by tier | Pass |
-# MAGIC | 9 | SLA % | Pass |
-# MAGIC | 10 | Acq channel 12 mo | Pass |
-# MAGIC | 11 | Churn trend 6 mo | Pass |
-# MAGIC | 12 | Net monthly revenue | Pass |
-# MAGIC | 13 | High risk + high pay | Pass |
-# MAGIC | 14 | Avg resolution by type/priority | **Fail (sample)** — e.g. wrong handling of ticket date filters until a Q14-style example is certified; your run may Pass |
-# MAGIC | 15 | Revenue at risk | Pass (after clarifying high-churn + active + `monthly_spend` in UC comments) |
+# MAGIC | 1 | Region / churn risk | Pass |
+# MAGIC | 2 | Payment failure rate | Pass |
+# MAGIC | 3 | Data by tier | Pass |
+# MAGIC | 4 | SLA % | Pass |
+# MAGIC | 5 | Acq channel 12 mo | Pass |
+# MAGIC | 6 | Churn trend 6 mo | Pass |
+# MAGIC | 7 | Net monthly revenue | Pass |
+# MAGIC | 8 | High risk + high pay | Pass |
+# MAGIC | 9 | Avg resolution by type/priority | **Fail (sample)** — e.g. wrong handling of ticket date filters until a Q9-style example is certified; your run may Pass |
+# MAGIC | 10 | Revenue at risk | Pass (after clarifying high-churn + active + `monthly_spend` in UC comments) |
 # MAGIC
 # MAGIC ### Assessment Question Result - run 4
 # MAGIC
@@ -111,9 +106,9 @@
 # MAGIC
 # MAGIC | # | Pattern | Root cause (sample) | Fix applied |
 # MAGIC |---|---------|---------------------|-------------|
-# MAGIC | 1 | **Revenue / fiscal year wrong** | Model defaulted to calendar year and summed all payment rows | Instructions: define FY Apr–Mar; revenue = `pmt_status = 'successful'` MRC+OTC minus refunds on MRC+OTC; date filter on `payment_date`. Optional: paste Q2 SQL as certified example. |
+# MAGIC | 1 | **Revenue / fiscal year wrong** | Model defaulted to calendar year and summed all payment rows | Instructions: define FY Apr–Mar; revenue = `pmt_status = 'successful'` MRC+OTC minus refunds on MRC+OTC; date filter on `payment_date`. Optional: paste the revenue SQL as a certified example. |
 # MAGIC | 2 | **“Open tickets” over/under-counted** | Assumed a status column or “not closed” without matching schema | Instructions: open = `resolved_date IS NULL`. UC comment on `resolved_date`. |
-# MAGIC | 3 | **Tier / usage questions mis-joined** | Weak join path customer → plan; `usage_type` for data not set to `'D'` | UC on `usage_type`; example SQL for Q8-style join and `WHERE usage_type = 'D'`; confirm `plan_id` on `tc_customers`. |
+# MAGIC | 3 | **Tier / usage questions mis-joined** | Weak join path customer → plan; `usage_type` for data not set to `'D'` | UC on `usage_type`; example SQL for Q3-style join and `WHERE usage_type = 'D'`; confirm `plan_id` on `tc_customers`. |
 
 # COMMAND ----------
 

@@ -145,7 +145,7 @@
 # MAGIC | Area | Weight | Standard |
 # MAGIC |------|--------|----------|
 # MAGIC | Genie Space setup with knowledge store | 30% | A fully configured Genie Space with source tables, knowledge Store with example SQL, table relationships, SQL expressions, and general instructions |
-# MAGIC | Benchmark score | 20% | ≥ 85% (13+ of 15 passing) |
+# MAGIC | Benchmark score | 20% | ≥ 85% (9+ of 10 passing) |
 # MAGIC | Tuning documentation | 40% | Tuning log, discovery findings, lessons learnt, and handover recommendations |
 # MAGIC | AI/BI Dashboard | 10% | Pairing Genie with a sample AI/BI Dashboards |
 # MAGIC 
