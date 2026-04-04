@@ -91,13 +91,19 @@
 # MAGIC | tc_payments | payment_type | MRC | Monthly Recurring Charge | Type of charge; ADJ amounts may be negative |
 # MAGIC | | | OTC | One-Time Charge | |
 # MAGIC | | | ADJ | Adjustment / credit | |
-# MAGIC | | total payment amount | > avg | High | A subscriber's total payment amount is "high" when it exceeds the average total payment across all subscribers |
 # MAGIC | | pmt_method | CC | Credit Card | Payment instrument |
 # MAGIC | | | DD | Direct Debit | |
 # MAGIC | | | BT | Bank Transfer | |
 # MAGIC | | | WT | Wallet / prepaid | |
 # MAGIC | | | | | |
 # MAGIC | — | Fiscal year | — | April – March | |
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Derived subscriber metrics (not table columns)
+# MAGIC 
+# MAGIC `tc_payments` has no **total payment amount** column — each row stores **`amount`**. For questions about **high total payment**, compute each subscriber's **total paid** by aggregating `amount` with the same rules as benchmark **Q8** (net successful and refunded MRC/OTC; adjustments do not contribute to that total). **High** means that per-subscriber total is **greater than** the average of those totals across all subscribers.
 
 # COMMAND ----------
 
