@@ -101,7 +101,7 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### Derived subscriber metrics (not table columns)
+# MAGIC #### Derived subscriber metrics (not table columns)
 # MAGIC 
 # MAGIC `tc_payments` has no **total payment amount** column — each row stores **`amount`**. For questions about **high total payment**, compute each subscriber's **total paid** by aggregating `amount` with the same rules as benchmark **Q8** (net successful and refunded MRC/OTC; adjustments do not contribute to that total). **High** means that per-subscriber total is **greater than** the average of those totals across all subscribers.
 
@@ -129,12 +129,6 @@
 # MAGIC Step 7: Once you have achieved accuracy score, add <a href="$./4.assessment_sqls">assessment_sqls</a> to the space and run Benchmark evaluations on these queries. - These queries are only for cross validating tuned Genie space - DO NOT tune with these queries. **NOTE**: You are not marked based on accuracy of assessment queries, but please record your the result in the delivery report
 # MAGIC 
 # MAGIC Step 8: Finalise your delivery report and submit for assessment
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## Reference material
-# MAGIC 
 
 # COMMAND ----------
 
