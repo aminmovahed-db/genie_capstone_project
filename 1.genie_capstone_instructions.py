@@ -101,7 +101,7 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### Derived subscriber metrics (not table columns)
+# MAGIC #### Derived subscriber metrics (not table columns)
 # MAGIC 
 # MAGIC `tc_payments` has no **total payment amount** column — each row stores **`amount`**. For questions about **high total payment**, compute each subscriber's **total paid** by aggregating `amount` with the same rules as benchmark **Q8** (net successful and refunded MRC/OTC; adjustments do not contribute to that total). **High** means that per-subscriber total is **greater than** the average of those totals across all subscribers.
 
@@ -118,7 +118,11 @@
 # MAGIC 
 # MAGIC Step 4: Run benchmark Evaluation to generate baseline accuracy
 # MAGIC 
-# MAGIC Step 5: Iteratively tune Genie space following <a href="https://docs.google.com/document/d/1HTUbxnO9y5NQQI3ZyBY9nR6V0TKuRZ0nRhHBD2alPkI/edit?tab=t.0">Best Practices For Building A Genie Space</a> and <a href="https://docs.databricks.com/aws/en/genie/best-practices">Curate an effective Genie space</a>
+# MAGIC Step 5: Iteratively tune Genie space following the reference material below:
+# MAGIC - <a href="https://docs.databricks.com/aws/en/genie/best-practices">Curate an effective Genie space</a>
+# MAGIC - <a href="https://docs.databricks.com/aws/en/genie/set-up">Set up and manage a Genie space</a>
+# MAGIC - <a href="https://docs.databricks.com/aws/en/genie/knowledge-store">Build a knowledge store for more reliable Genie spaces</a>
+# MAGIC - <a href="https://docs.google.com/document/d/1HTUbxnO9y5NQQI3ZyBY9nR6V0TKuRZ0nRhHBD2alPkI/edit?tab=t.0">Best Practices For Building A Genie Space</a> (internal Databricks document; not publicly accessible)
 # MAGIC 
 # MAGIC Step 6: Frequently run Benchmark Evaluations on all benchmark questions to show progress - Go back to Step 5 until target >85% is achieved
 # MAGIC 
