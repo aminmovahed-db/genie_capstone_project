@@ -113,12 +113,19 @@ WHERE rnk = 1
 """,
 
     "A7 — In the current fiscal year, what is the sum of all adjustment payment amounts (payment_type ADJ, successful status only)?": f"""
-SELECT ROUND(SUM(amount), 2) AS total_adjustment_amount_fy
-FROM {catalog}.{schema}.tc_payments
-WHERE payment_type = 'ADJ'
-  AND pmt_status = 'successful'
-  AND payment_date >= '2025-04-01'
-  AND payment_date < '2026-04-01'
+WITH fy AS (
+    SELECT CASE
+               WHEN MONTH(CURRENT_DATE()) >= 4 THEN MAKE_DATE(YEAR(CURRENT_DATE()), 4, 1)
+               ELSE MAKE_DATE(YEAR(CURRENT_DATE()) - 1, 4, 1)
+           END AS fy_start
+)
+SELECT ROUND(SUM(p.amount), 2) AS total_adjustment_amount_fy
+FROM {catalog}.{schema}.tc_payments p
+CROSS JOIN fy
+WHERE p.payment_type = 'ADJ'
+  AND p.pmt_status = 'successful'
+  AND p.payment_date >= fy.fy_start
+  AND p.payment_date < ADD_MONTHS(fy.fy_start, 12)
 """,
 }
 
